@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network Final Exam Mastery Suite (Ch 4-8)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+    :root {
+      --bg: #f1f5f9;
+      --card-bg: #ffffff;
+      --card-subtle: #f8fafc;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --primary: #0e7c7b;
+      --primary-hover: #0f766e;
+      --primary-soft: #e6f4f3;
+      --accent: #b45309;
+      --success: #15803d;
+      --danger: #b91c1c;
+      --purple: #6d28d9;
+      --text: #1e293b;
+      --heading: #0f172a;
+      --text-muted: #64748b;
+      --code-bg: #0f172a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Sarabun', 'TH Sarabun New', 'TH Sarabun PSK', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    p::first-letter, span::first-letter, li::first-letter { font-size: inherit; margin: 0; padding: 0; }
+
+    h3 { font-size: 19px; font-weight: 700; color: var(--heading); }
+    h4 { font-size: 17px; font-weight: 700; color: var(--heading); }
+    h5 { font-size: 16px; font-weight: 700; color: var(--heading); }
+
+    code {
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 0.88em;
+      background: #f1f5f9;
+      color: var(--primary);
+      padding: 1px 5px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    a { color: var(--primary); }
+
+    /* Header & Navigation */
+    header {
+      background: #ffffff;
+      border-bottom: 2px solid var(--primary);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 12px 24px;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+    }
+
+    .header-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+
+    .brand-icon {
+      width: 42px; height: 42px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 15px; color: #fff;
+    }
+
+    .brand-title { font-size: 19px; font-weight: 700; color: var(--heading); line-height: 1.25; }
+    .brand-sub { font-size: 13px; color: var(--text-muted); }
+
+    nav { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .nav-btn {
+      background: #ffffff;
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      padding: 7px 13px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      font-family: inherit;
+    }
+
+    .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .nav-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: 600; }
+
+    .main-container { max-width: 1280px; margin: 24px auto; padding: 0 20px; }
+
+    /* Cards & Containers */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 26px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+    }
+
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 10px; margin-bottom: 20px;
+      flex-wrap: wrap; gap: 12px;
+    }
+
+    .section-title { font-size: 23px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-primary { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .badge-accent  { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .badge-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .badge-danger  { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .badge-purple  { background: #ede9fe; color: #5b21b6; border: 1px solid #ddd6fe; }
+
+    /* Grid layouts */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+
+    .sub-card {
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .sub-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; color: var(--heading); }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 15px; background: #fff; }
+    th, td { border: 1px solid var(--border-strong); padding: 8px 12px; text-align: left; vertical-align: top; }
+    th { background: #f1f5f9; color: var(--heading); font-weight: 600; }
+    tr:nth-child(even) td { background: #f8fafc; }
+
+    /* Solver tabs */
+    .solver-tabs {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .tab-btn {
+      background: #fff;
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+    }
+
+    .tab-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: 700; }
+
+    /* Explain box (formerly dark terminal box) */
+    .step-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 12px 0;
+      font-family: inherit;
+      font-size: 15px;
+      line-height: 1.7;
+      white-space: pre-line;
+      color: var(--text);
+      overflow-x: auto;
+    }
+
+    .callout {
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    .callout-info    { background: #f0f9ff; border-left: 4px solid #0284c7; }
+    .callout-warning { background: #fffbeb; border-left: 4px solid #f59e0b; }
+    .callout-danger  { background: #fef2f2; border-left: 4px solid #ef4444; }
+    .callout-success { background: #f0fdf4; border-left: 4px solid #22c55e; }
+
+    /* Buttons */
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: 1px solid var(--primary);
+      padding: 9px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.15s;
+      font-family: inherit;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+
+    .btn:hover { background: var(--primary-hover); }
+    .btn-outline { background: #fff; color: var(--primary); }
+    .btn-outline:hover { background: var(--primary-soft); }
+    .btn-accent { background: #d97706; border-color: #d97706; color: #fff; }
+    .btn-accent:hover { background: #b45309; }
+
+    /* Exam Question Styles */
+    .q-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .q-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .q-prompt { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--heading); }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+
+    .opt-label {
+      display: flex; align-items: center; gap: 10px;
+      background: #fff;
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border-strong);
+      cursor: pointer;
+      font-size: 15px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .opt-label:hover { border-color: var(--primary); background: var(--primary-soft); }
+    .opt-label.selected { border-color: var(--primary); background: var(--primary-soft); }
+    .opt-label.correct { border-color: #16a34a; background: #dcfce7; }
+    .opt-label.incorrect { border-color: #dc2626; background: #fee2e2; }
+
+    .rationale-box {
+      display: none;
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      border-radius: 0 6px 6px 0;
+      padding: 12px 14px;
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    /* SVG diagrams */
+    .diagram-container {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex; justify-content: center; align-items: center;
+      margin: 14px 0;
+      overflow-x: auto;
+    }
+
+    /* Print */
+    table, table.data, table tr, table.data tr { break-inside: avoid; page-break-inside: avoid; }
+    pre, .step-box, .diagram-container, .sub-card { break-inside: avoid; page-break-inside: avoid; }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .header-container { flex-direction: column; align-items: stretch; gap: 10px; }
+      nav { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+      .nav-btn { white-space: nowrap; font-size: 13px; padding: 6px 11px; flex-shrink: 0; }
+      .section-card { padding: 16px 14px; border-radius: 8px; margin-bottom: 16px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 12px; }
+      .solver-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 6px; }
+      .tab-btn { white-space: nowrap; font-size: 13px; padding: 6px 11px; flex-shrink: 0; }
+      table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .section-title { font-size: 19px; }
+      body { font-size: 15px; }
+    }
+
+    @media print {
+      body { background: #fff; font-size: 12pt; }
+      header, nav, .btn, .no-print, .solver-tabs { display: none !important; }
+      .tab-pane, .solver-content { display: block !important; }
+      .section-card { box-shadow: none; border: none; padding: 0; page-break-before: always; }
+      .section-card:first-child { page-break-before: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">NET</div>
+        <div>
+          <div class="brand-title">Computer Networks Final Exam Mastery</div>
+          <div class="brand-sub">แนวข้อสอบและคู่มือติวเข้มเสมือนจริง (Chapters 4 - 8) • 130 คะแนน</div>
+        </div>
+      </div>
+      <nav>
+        <button class="nav-btn active" onclick="switchMainTab('blueprint')">📋 โครงสร้างข้อสอบ</button>
+        <button class="nav-btn" onclick="switchMainTab('concepts')">🧠 สรุปเข้ม Ch 4-8</button>
+        <button class="nav-btn" onclick="switchMainTab('solvers')">🧮 5 ข้อเขียน Part B (60 คะแนน)</button>
+        <button class="nav-btn" onclick="switchMainTab('mockexam')">🎯 จำลองทำข้อสอบ (Mock Exam)</button>
+        <button class="nav-btn" onclick="switchMainTab('cheatsheet')">📑 สูตรลัด & ดักจุดหลอก</button>
+        <button class="nav-btn" onclick="switchMainTab('vara')">📺 คลิปบรรยาย อ.วรา (Vara Vault)</button>
+        <button class="nav-btn no-print" onclick="window.print()">🖨️ พิมพ์ชีทติว</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+
+    <!-- TAB 1: BLUEPRINT -->
+    <section id="tab-blueprint" class="tab-pane">
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span>📋 โครงสร้างและยุทธศาสตร์การทำข้อสอบ (Exam Blueprint & Strategy)</span>
+          </div>
+          <span class="badge badge-primary">Total: 130 Points</span>
+        </div>
+
+        <p style="margin-bottom: 16px; color: var(--text-muted);">
+          ข้อสอบปลายภาควิชา Network แบ่งออกเป็น 2 ส่วนชัดเจน รวมทั้งสิ้น 130 คะแนน ครอบคลุมเนื้อหาบทที่ 4 ถึง 8 ทั้งหมด:
+        </p>
+
+        <div class="grid-2">
+          <div class="sub-card" style="border-top: 4px solid var(--primary);">
+            <div class="sub-title">
+              <span class="badge badge-primary">Part A</span>
+              <span>สอบบน Moodle (70 คะแนน)</span>
+            </div>
+            <p style="font-size: 14px; margin-bottom: 10px;">
+              <strong>รูปแบบ:</strong> ปรนัย (Multiple Choice, True/False, Matching)
+            </p>
+            <ul style="font-size: 14px; margin-left: 20px; line-height: 1.8;">
+              <li><strong>Ch 4 Data Plane:</strong> Subnetting (CIDR, /24 &rarr; four /26, 2<sup>n</sup>-2 hosts), NAT, DHCP (DORA), VLANs (Access vs Trunk, 802.1Q), Virtual Circuit vs Datagram</li>
+              <li><strong>Ch 5 Control Plane:</strong> RIP vs OSPF, Distance-Vector vs Link-State, Count-to-Infinity, BGP, ICMP error reporting</li>
+              <li><strong>Ch 6 Link Layer:</strong> CRC vs Checksum vs FEC, CSMA/CD, Switch Self-Learning (Source MAC + Flooding), STP Rules, Ethernet Frame (Dest MAC, FCS)</li>
+              <li><strong>Ch 7 Wireless:</strong> 802.11 Infrastructure mode, CSMA/CA, Hidden Terminal & RTS/CTS, 4G vs 5G</li>
+              <li><strong>Ch 8 Security & Ethics:</strong> CIA Triad, Encryption vs Integrity, ARP Spoofing/Poisoning, DAI & DHCP Snooping, จริยธรรมวิศวกร (Data Minimisation)</li>
+            </ul>
+          </div>
+
+          <div class="sub-card" style="border-top: 4px solid var(--accent);">
+            <div class="sub-title">
+              <span class="badge badge-accent">Part B</span>
+              <span>ข้อสอบข้อเขียนบนกระดาษ (60 คะแนน)</span>
+            </div>
+            <p style="font-size: 14px; margin-bottom: 10px;">
+              <strong>รูปแบบ:</strong> แสดงวิธีทำ 5 ข้อใหญ่ (Show-Your-Work Problems)
+            </p>
+            <div class="callout callout-warning" style="margin: 8px 0;">
+              ⚠️ <strong>ข้อควรระวังสำคัญที่สุด:</strong> อาจารย์ระบุชัดเจนว่า <em>"An answer without its working earns only partial credit"</em> หากตอบแต่คำตอบสุดท้ายโดยไม่มีการแสดงตารางหรือขั้นตอน จะโดนหักคะแนนหนักมาก!
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>ข้อที่</th>
+                  <th>หัวข้อ</th>
+                  <th>คะแนน</th>
+                  <th>ประเด็นที่ต้องแสดงวิธีทำ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td><strong>RIP Distance-Vector</strong></td>
+                  <td><span class="badge badge-primary">15 คะแนน</span></td>
+                  <td>ตาราง Round 1 และ 2, เช็ค Convergence, Equal-cost, Poison Reverse</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td><strong>OSPF / Dijkstra</strong></td>
+                  <td><span class="badge badge-primary">15 คะแนน</span></td>
+                  <td>ตารางแสดงขั้นตอน N' และ D(v), สรุป Routing Table (Dest, Cost, Next Hop)</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><strong>Virtual-Circuit Table</strong></td>
+                  <td><span class="badge badge-accent">12 คะแนน</span></td>
+                  <td>ตาราง Forwarding ของสวิตช์แต่ละตัวขาไป และ ขากลับ (Swap In/Out)</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td><strong>Spanning Tree (STP)</strong></td>
+                  <td><span class="badge badge-accent">12 คะแนน</span></td>
+                  <td>หา Root Bridge, Root Port, Designated Port, Blocking Port และรูป Loop-free</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td><strong>Security & Ethics Case</strong></td>
+                  <td><span class="badge badge-success">6 คะแนน</span></td>
+                  <td>วิเคราะห์ ARP Spoofing (MitM) + DAI/DHCP Snooping + จริยธรรมการดักจับข้อมูล</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: DETAILED CONCEPTS (CH 4 - 8) -->
+    <section id="tab-concepts" class="tab-pane" style="display: none;">
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span>🧠 สรุปเข้มเนื้อหาและจุดตัดคำหลอกรายบท (Chapters 4 – 8)</span>
+          </div>
+          <span class="badge badge-purple">High-Yield Theory</span>
+        </div>
+
+        <!-- Ch 4 -->
+        <div class="sub-card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--primary); margin-bottom: 8px;">🌐 บทที่ 4: Network Layer — Data Plane</h3>
+          <p style="font-size: 14px; margin-bottom: 12px;">หน้าที่หลักคือการ Forwarding แพ็กเก็ตจาก Input ไปยัง Output ภายในตัว Router/Switch เดียวกัน</p>
+          <div class="grid-2">
+            <div style="background: #ffffff; padding: 12px; border-radius: 8px;">
+              <h4 style="color: var(--accent); margin-bottom: 6px;">1. IP Addressing & Subnetting</h4>
+              <ul style="font-size: 14px; line-height: 1.7; padding-left: 20px;">
+                <li><strong>สูตร Host ที่ใช้งานได้:</strong> <code>2<sup>n</sup> - 2</code> (ลบ 2 เสมอ คือ Network ID ตัวแรก และ Broadcast IP ตัวสุดท้าย)</li>
+                <li><strong>การแบ่งซับเน็ต (Borrowing bits):</strong> เช่น บล็อก <code>/24</code> (256 IPs) ต้องการแบ่งเป็น 4 ซับเน็ตเท่าๆ กัน: ยืมบิต 2 บิต (2<sup>2</sup> = 4) prefix กลายเป็น <code>/26</code> (ได้ซับเน็ตละ 64 IPs, ใช้ได้ 62 hosts/subnet)</li>
+                <li><strong>การหา Network Address:</strong> นำ IP ของ Host ทำ Bitwise AND กับ Subnet Mask</li>
+              </ul>
+            </div>
+            <div style="background: #ffffff; padding: 12px; border-radius: 8px;">
+              <h4 style="color: var(--accent); margin-bottom: 6px;">2. NAT & DHCP & VLANs</h4>
+              <ul style="font-size: 14px; line-height: 1.7; padding-left: 20px;">
+                <li><strong>NAT:</strong> แปลง Private IP หลายเครื่องในองค์กรให้ใช้ Public IP ตัวเดียวกันออกสู่อินเทอร์เน็ตผ่าน Translation Table (IP:Port)</li>
+                <li><strong>DHCP (DORA):</strong> Discover &rarr; Offer &rarr; Request &rarr; ACK จ่าย IP, Subnet Mask, Default Gateway และ DNS โดยอัตโนมัติ</li>
+                <li><strong>VLANs:</strong> แบ่งสวิตช์ 1 ตัวเป็นหลาย Broadcast Domains
+                  <br>• <em>Access Port:</em> พอร์ตต่อ End-Device (ไม่มี Tag)
+                  <br>• <em>Trunk Port:</em> ส่งต่อหลาย VLANs ข้ามสวิตช์ ต้องติด Tag <strong>IEEE 802.1Q (4 bytes)</strong>
+                  <br>• <em>Inter-VLAN Routing:</em> ต้องมี Router หรือ L3 Switch เข้ามาช่วย</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout callout-info" style="margin-top: 12px;">
+            📌 <strong>Datagram vs Virtual Circuit:</strong>
+            <br>• <strong>Datagram (IP ปัจจุบัน):</strong> ไร้การเชื่อมต่อ (Connectionless), Best-Effort, แพ็กเก็ตแต่ละตัวเดินทางอิสระ อาจสลับลำดับกันได้, ไม่มีรับประกัน Bandwidth
+            <br>• <strong>Virtual Circuit (VC - เช่น ATM, X.25):</strong> ต้องทำ <em>Call Setup</em> เพื่อจองเส้นทางและกำหนดหมายเลข VC (VCI) ก่อนส่งข้อมูล แพ็กเก็ตจะเดินทางตามลำดับเดิมเสมอ
+          </div>
+        </div>
+
+        <!-- Ch 5 -->
+        <div class="sub-card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--primary); margin-bottom: 8px;">🗺️ บทที่ 5: Network Layer — Control Plane (Routing)</h3>
+          <p style="font-size: 14px; margin-bottom: 12px;">การหาเส้นทางข้ามเครือข่ายระหว่างเราเตอร์</p>
+          <div class="grid-2">
+            <div style="background: #ffffff; padding: 12px; border-radius: 8px;">
+              <h4 style="color: var(--accent); margin-bottom: 6px;">RIP (Distance-Vector)</h4>
+              <ul style="font-size: 14px; line-height: 1.7; padding-left: 20px;">
+                <li>ใช้อัลกอริทึม <strong>Bellman-Ford</strong></li>
+                <li>สูตรอัปเดต: <code>D<sub>x</sub>(y) = min<sub>v</sub> { c(x,v) + D<sub>v</sub>(y) }</code></li>
+                <li><strong>Metric:</strong> Hop count (จำนวนเราเตอร์ที่ผ่าน)</li>
+                <li><strong>จำกัดสูงสุด:</strong> 15 hops (16 = Unreachable / เข้าไม่ถึง)</li>
+                <li>แลกเปลี่ยนตารางเฉพาะกับ <strong>เพื่อนบ้าน (Neighbors)</strong> เท่านั้น</li>
+              </ul>
+            </div>
+            <div style="background: #ffffff; padding: 12px; border-radius: 8px;">
+              <h4 style="color: var(--accent); margin-bottom: 6px;">OSPF (Link-State)</h4>
+              <ul style="font-size: 14px; line-height: 1.7; padding-left: 20px;">
+                <li>ใช้อัลกอริทึม <strong>Dijkstra's Algorithm</strong></li>
+                <li>กระจายข้อมูลแบบ <strong>LSA (Link-State Advertisement) Flooding</strong> ให้ทุกเราเตอร์ใน Area ทราบสถานะลิงก์ของทั้งเครือข่าย</li>
+                <li><strong>Metric:</strong> Cost (มักผกผันกับ Bandwidth: Cost = 10<sup>8</sup> / Bandwidth)</li>
+                <li>แต่ละเราเตอร์มี Global Topology Map เหมือนกัน แล้วคำนวณ Shortest Path Tree ด้วยตนเอง</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout callout-danger" style="margin-top: 12px;">
+            ⚠️ <strong>Count-to-Infinity & Poison Reverse (ออกข้อสอบชัวร์!):</strong>
+            <br>• ปัญหาเกิดใน Distance-Vector เมื่อลิงก์ขาด แล้วเราเตอร์ A ยังคิดว่าไปถึงปลายทางผ่าน B ได้ ขณะที่ B ก็คิดว่าไปผ่าน A ได้ เกิด Routing Loop และค่า Hop นับบวกขึ้นไปเรื่อยๆ จนถึงอนันต์
+            <br>• <strong>Split-Horizon with Poison Reverse:</strong> หากเราเตอร์ Z เรียนรู้เส้นทางไปยังปลายทาง X โดยผ่านเพื่อนบ้าน Y &rarr; Z จะรายงานกลับไปบอก Y ว่า <code>D<sub>Z</sub>(X) = &infin;</code> (หรือ 16) เพื่อป้องกันไม่ให้ Y ส่งข้อมูลย้อนกลับมาหาตน
+          </div>
+          <div style="font-size: 14px; margin-top: 8px; color: var(--text-muted);">
+            • <strong>BGP (Border Gateway Protocol):</strong> ใช้หาเส้นทางระหว่าง Autonomous Systems (AS) ข้ามระดับโลก เป็น Path Vector Protocol<br>
+            • <strong>ICMP:</strong> ใช้สำหรับแจ้ง Error และวินิจฉัยโครงข่าย (เช่น Ping, Traceroute, TTL Expired) <em>ไม่ใช่โพรโทคอลสำหรับส่ง User Data</em>
+          </div>
+        </div>
+
+        <!-- Ch 6 -->
+        <div class="sub-card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--primary); margin-bottom: 8px;">🔌 บทที่ 6: Link Layer & LANs</h3>
+          <div class="grid-2">
+            <div style="background: #ffffff; padding: 12px; border-radius: 8px;">
+              <h4 style="color: var(--accent); margin-bottom: 6px;">การตรวจจับความผิดพลาด & Media Access</h4>
+              <ul style="font-size: 14px; line-height: 1.7; padding-left: 20px;">
+                <li><strong>Error Detection:</strong>
+                  <br>• <em>Checksum & CRC (Cyclic Redundancy Check):</em> ทำหน้าที่เพียง <strong>Detect (ตรวจจับ)</strong> เท่านั้น <strong>ไม่สามารถแก้ไข (Correct) ได้!</strong>
+                  <br>• หากต้องการแก้ไขบิตที่ผิดพลาด ต้องใช้เทคนิค <strong>FEC (Forward Error Correction)</strong> เช่น Hamming Code
+                </li>
+                <li><strong>CSMA/CD:</strong> ใช้บน <em>Wired Ethernet แบบแชร์สาย</em> (ฟังก่อนพูด ถ้าชนกันให้หยุด ส่ง Jam Signal แล้วสุ่มถอยแบบ Exponential Backoff)
+                  <br>⚠️ <em>คำเตือน:</em> ไร้สายไม่ใช้ CSMA/CD เพราะดักฟังสัญญาณชนขณะส่งไม่ได้ (ใช้ CSMA/CA แทน)
+                </li>
+              </ul>
+            </div>
+            <div style="background: #ffffff; padding: 12px; border-radius: 8px;">
+              <h4 style="color: var(--accent); margin-bottom: 6px;">Switch Self-Learning & STP</h4>
+              <ul style="font-size: 14px; line-height: 1.7; padding-left: 20px;">
+                <li><strong>Switch Self-Learning:</strong> สวิตช์เรียนรู้ MAC จาก <strong>Source MAC</strong> ของเฟรมที่เข้ามาเพื่อจับคู่ (MAC, Port, Timestamp)
+                  <br>• หากส่งหา <strong>Destination MAC</strong> ที่ไม่มีในตาราง จะทำ <strong>Flooding</strong> ออกทุกพอร์ต <em>ยกเว้น</em> พอร์ตที่รับเข้ามา
+                </li>
+                <li><strong>STP (Spanning Tree Protocol - 802.1D):</strong> ป้องกัน Loop และ Broadcast Storm ในระบบสายเชื่อมโยงสำรอง (Redundant Links)
+                  <br>• ค่า Cost ตามมาตรฐาน IEEE:
+                  <br>&nbsp;&nbsp;- <strong>10 Mbps</strong> = <code>100</code>
+                  <br>&nbsp;&nbsp;- <strong>100 Mbps</strong> = <code>19</code>
+                  <br>&nbsp;&nbsp;- <strong>1 Gbps</strong> = <code>4</code>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ch 7 & 8 -->
+        <div class="grid-2">
+          <div class="sub-card">
+            <h3 style="color: var(--primary); margin-bottom: 8px;">📡 บทที่ 7: Wireless & Mobile</h3>
+            <ul style="font-size: 14px; line-height: 1.7; padding-left: 20px;">
+              <li><strong>802.11 Infrastructure Mode:</strong> มี Access Point (AP) เป็นศูนย์กลางคอยรับส่งข้อมูลระหว่าง Client ไร้สายกับระบบ LAN สาย</li>
+              <li><strong>CSMA/CA (Collision Avoidance):</strong> โพรโทคอลหลีกเลี่ยงการชนกันบน Wi-Fi ด้วยการใช้ Inter-Frame Space (DIFS, SIFS) และ ACK</li>
+              <li><strong>Hidden Terminal Problem:</strong> สถานี A และ C ส่งหา B แต่ A กับ C มองไม่เห็นกัน ทำให้สัญญาณชนกันที่ B &rarr; แก้ไขด้วยการใช้ <strong>RTS (Request to Send) / CTS (Clear to Send)</strong> handshake</li>
+              <li><strong>4G vs 5G:</strong> 5G ให้ความเร็วสูงขึ้นมากและมีความหน่วง (Latency) ต่ำระดับ 1 ms รองรับ Massive IoT และ Edge Computing ใช้เทคนิค OFDMA/NR ไม่ได้ใช้ CSMA/CD</li>
+            </ul>
+          </div>
+
+          <div class="sub-card">
+            <h3 style="color: var(--primary); margin-bottom: 8px;">🛡️ บทที่ 8: Security & Ethics</h3>
+            <ul style="font-size: 14px; line-height: 1.7; padding-left: 20px;">
+              <li><strong>CIA Triad:</strong> <em>Confidentiality</em> (ความลับ), <em>Integrity</em> (ความถูกต้องสมบูรณ์), <em>Availability</em> (ความพร้อมใช้)</li>
+              <li><strong>Encryption vs Integrity:</strong> การเข้ารหัสรับประกันแค่ <em>Confidentiality</em> เท่านั้น ไม่สามารถกันการดัดแปลงแก้ไขข้อมูลได้ (Integrity ต้องใช้ MAC / HMAC / Digital Signature)</li>
+              <li><strong>ARP Spoofing:</strong> ส่ง Gratuitous ARP ปลอมเพื่อหลอกเครื่องเหยื่อว่า MAC ของตนคือ Gateway &rarr; โจมตีแบบ Man-in-the-Middle (MitM) ทำลายทั้ง Confidentiality และ Integrity</li>
+              <li><strong>Mitigations:</strong> <em>DAI (Dynamic ARP Inspection)</em> ควบคู่กับ <em>DHCP Snooping</em>, Static ARP, Port Security, Private VLANs</li>
+              <li><strong>จริยธรรมวิศวกรเครือข่าย:</strong> เมื่อได้รับมอบหมายให้ Packet Sniffing ต้องยึดหลัก <strong>Data Minimisation</strong> (ดักเฉพาะที่จำเป็น), เข้ารหัสไฟล์จัดเก็บ, กำหนดอายุการทำลาย, ห้ามแอบเปิดดูหรือเผยแพร่รหัสผ่าน/ข้อความส่วนตัวของผู้อื่นเด็ดขาด!</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: 5 SOLVERS (PART B: 60 POINTS) -->
+    <section id="tab-solvers" class="tab-pane" style="display: none;">
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span>🧮 5 ข้อเขียน Part B: แสดงวิธีทำละเอียดทุกขั้นตอน (60 คะแนนเต็ม)</span>
+          </div>
+          <span class="badge badge-accent">Show-Your-Work Solvers</span>
+        </div>
+
+        <!-- Solver Selector Subtabs -->
+        <div class="solver-tabs">
+          <button class="tab-btn active" onclick="switchSolverTab('rip')">ข้อ 1: RIP Distance Vector (15 คะแนน)</button>
+          <button class="tab-btn" onclick="switchSolverTab('dijkstra')">ข้อ 2: OSPF / Dijkstra (15 คะแนน)</button>
+          <button class="tab-btn" onclick="switchSolverTab('vc')">ข้อ 3: Virtual-Circuit Table (12 คะแนน)</button>
+          <button class="tab-btn" onclick="switchSolverTab('stp')">ข้อ 4: Spanning Tree STP (12 คะแนน)</button>
+          <button class="tab-btn" onclick="switchSolverTab('sec')">ข้อ 5: Security & Ethics Case (6 คะแนน)</button>
+        </div>
+
+        <!-- SOLVER 1: RIP -->
+        <div id="solver-rip" class="solver-content">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="color: var(--primary);">ข้อ 1: RIP Distance-Vector Algorithm (Bellman-Ford)</h3>
+            <span class="badge badge-primary">15 Points</span>
+          </div>
+          <p style="font-size: 14px; margin-bottom: 12px;">
+            <strong>โจทย์ตัวอย่างมาตรฐานข้อสอบ:</strong> กำหนดเครือข่ายมีเราเตอร์ 3 ตัวคือ <code>x, y, z</code> ที่เชื่อมต่อกันด้วย Link Cost ดังนี้:
+            <br><code>c(x,y) = 2</code>, <code>c(x,z) = 7</code>, <code>c(y,z) = 1</code>
+          </p>
+
+          <div class="diagram-container">
+            <svg width="460" height="150" viewBox="0 0 460 150">
+              <!-- Links -->
+              <line x1="80" y1="80" x2="230" y2="40" stroke="#0369a1" stroke-width="3" />
+              <line x1="80" y1="80" x2="380" y2="80" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4" />
+              <line x1="230" y1="40" x2="380" y2="80" stroke="#10b981" stroke-width="3" />
+
+              <!-- Link labels -->
+              <text x="145" y="50" fill="#0369a1" font-size="14" font-weight="bold">cost = 2</text>
+              <text x="220" y="105" fill="#475569" font-size="14">cost = 7</text>
+              <text x="310" y="50" fill="#10b981" font-size="14" font-weight="bold">cost = 1</text>
+
+              <!-- Node X -->
+              <circle cx="80" cy="80" r="22" fill="#0284c7" stroke="#0369a1" stroke-width="2" />
+              <text x="80" y="86" text-anchor="middle" fill="#fff" font-weight="bold" font-size="16">x</text>
+
+              <!-- Node Y -->
+              <circle cx="230" cy="40" r="22" fill="#0f766e" stroke="#10b981" stroke-width="2" />
+              <text x="230" y="46" text-anchor="middle" fill="#fff" font-weight="bold" font-size="16">y</text>
+
+              <!-- Node Z -->
+              <circle cx="380" cy="80" r="22" fill="#6d28d9" stroke="#a855f7" stroke-width="2" />
+              <text x="380" y="86" text-anchor="middle" fill="#fff" font-weight="bold" font-size="16">z</text>
+            </svg>
+          </div>
+
+          <div class="callout callout-info">
+            <strong>สูตร Bellman-Ford:</strong> <code>D<sub>x</sub>(y) = min<sub>v &isin; neighbors</sub> { c(x,v) + D<sub>v</sub>(y) }</code>
+          </div>
+
+          <h4 style="color: var(--accent); margin-top: 16px;">ขั้นตอนการแสดงวิธีทำทีละรอบ (Round-by-Round):</h4>
+
+          <!-- Step Tables -->
+          <div class="grid-3" style="margin-top: 12px;">
+            <div class="sub-card">
+              <h5 style="color: var(--primary); margin-bottom: 8px;">Round 0 (Initial State)</h5>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">แต่ละโหนดรู้เฉพาะระยะทางของตนเองไปยังเพื่อนบ้านที่ติดกัน:</p>
+              <table>
+                <thead>
+                  <tr><th>Router</th><th>To x</th><th>To y</th><th>To z</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>D<sub>x</sub></strong></td><td>0</td><td>2</td><td>7</td></tr>
+                  <tr><td><strong>D<sub>y</sub></strong></td><td>2</td><td>0</td><td>1</td></tr>
+                  <tr><td><strong>D<sub>z</sub></strong></td><td>7</td><td>1</td><td>0</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="sub-card">
+              <h5 style="color: var(--accent); margin-bottom: 8px;">Round 1 (หลังจากแลกเปลี่ยนเวกเตอร์)</h5>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">โหนดคำนวณใหม่โดยใช้ข้อมูลจากเพื่อนบ้าน:</p>
+              <table>
+                <thead>
+                  <tr><th>Router</th><th>To x</th><th>To y</th><th>To z</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>D<sub>x</sub></strong></td><td>0</td><td>2</td><td><strong style="color: var(--success);">3*</strong></td></tr>
+                  <tr><td><strong>D<sub>y</sub></strong></td><td>2</td><td>0</td><td>1</td></tr>
+                  <tr><td><strong>D<sub>z</sub></strong></td><td><strong style="color: var(--success);">3*</strong></td><td>1</td><td>0</td></tr>
+                </tbody>
+              </table>
+              <div style="font-size: 13px; color: var(--primary); margin-top: 6px;">
+                *คำนวณ D<sub>x</sub>(z) = min{c(x,y)+D<sub>y</sub>(z), c(x,z)+D<sub>z</sub>(z)}<br>
+                = min{2+1, 7+0} = min{3, 7} = <strong>3</strong> (ผ่าน y)
+              </div>
+            </div>
+
+            <div class="sub-card">
+              <h5 style="color: var(--success); margin-bottom: 8px;">Round 2 (Convergence!)</h5>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">ส่งเวกเตอร์ซ้ำ ไม่มีค่าใดเปลี่ยนแปลงอีก:</p>
+              <table>
+                <thead>
+                  <tr><th>Router</th><th>To x</th><th>To y</th><th>To z</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>D<sub>x</sub></strong></td><td>0</td><td>2</td><td>3</td></tr>
+                  <tr><td><strong>D<sub>y</sub></strong></td><td>2</td><td>0</td><td>1</td></tr>
+                  <tr><td><strong>D<sub>z</sub></strong></td><td>3</td><td>1</td><td>0</td></tr>
+                </tbody>
+              </table>
+              <div style="font-size: 13px; color: var(--success); margin-top: 6px;">
+                ✓ เครือข่ายเข้าสู่สภาวะ <strong>Converged</strong> สมบูรณ์ที่ Round 2!
+              </div>
+            </div>
+          </div>
+
+          <div class="step-box" style="margin-top: 16px;">// สรุปการตอบคำถามในกระดาษคำตอบข้อสอบ
+1. ตาราง Round 1: D_x(z) ลดลงจาก 7 เหลือ 3 โดยมี Next-hop คือ y
+2. ตาราง Round 2: ค่าคงที่ ไม่มีการส่งข่าวสารอัปเดตต่อ &rarr; สรุปว่า "Network has converged after Round 2"
+3. Equal-cost routes: หากมีสองเส้นทางที่ผลรวม cost เท่ากัน ให้ระบุทั้งสองทาง (เช่น Next-hop สามารถโหลดบาลานซ์ได้)
+4. Count-to-Infinity & Poison Reverse:
+   - หากลิงก์ (y,z) ขาด: y จะต้องโฆษณาไปหา x ว่าระยะทางไป z คือ &infin;
+   - Poison Reverse: ในยามปกติ z ส่งผ่าน y ไปหา x &rarr; z จะโฆษณาบอก y ว่า D_z(x) = &infin; ทันทีเพื่อกัน loop!</div>
+        </div>
+
+        <!-- SOLVER 2: OSPF DIJKSTRA -->
+        <div id="solver-dijkstra" class="solver-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="color: var(--primary);">ข้อ 2: OSPF / Dijkstra Shortest Path Algorithm</h3>
+            <span class="badge badge-primary">15 Points</span>
+          </div>
+          <p style="font-size: 14px; margin-bottom: 12px;">
+            <strong>โจทย์ตัวอย่างมาตรฐาน:</strong> คำนวณหาเส้นทางที่สั้นที่สุดจาก Source Node <code>u</code> ไปยังทุกโหนด <code>(v, x, y, w, z)</code>
+            <br>Link costs: <code>(u,v)=2</code>, <code>(u,x)=1</code>, <code>(u,w)=5</code>, <code>(x,v)=2</code>, <code>(x,w)=3</code>, <code>(x,y)=1</code>, <code>(v,w)=3</code>, <code>(w,y)=1</code>, <code>(w,z)=5</code>, <code>(y,z)=2</code>
+          </p>
+
+          <div class="callout callout-info">
+            <strong>สัญลักษณ์สำคัญในตาราง:</strong>
+            <br>• <code>N'</code>: เซตของโหนดที่ทราบเส้นทางที่สั้นที่สุดอย่างแน่นอนแล้ว
+            <br>• <code>D(v), p(v)</code>: ค่า Cost รวมปัจจุบันไปยังโหนด v และ predecessor node (โหนดก่อนหน้า)
+          </div>
+
+          <h4 style="color: var(--accent); margin-top: 16px;">ตารางแสดงวิธีทำข้อสอบแบบ Step-by-Step (ต้องเขียนตามนี้):</h4>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Step</th>
+                <th>N' (Selected Nodes)</th>
+                <th>D(v), p(v)</th>
+                <th>D(x), p(x)</th>
+                <th>D(y), p(y)</th>
+                <th>D(w), p(w)</th>
+                <th>D(z), p(z)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>0</strong></td>
+                <td>{u}</td>
+                <td>2, u</td>
+                <td><strong>1, u</strong></td>
+                <td>&infin;</td>
+                <td>5, u</td>
+                <td>&infin;</td>
+              </tr>
+              <tr>
+                <td><strong>1</strong></td>
+                <td>{u, x}</td>
+                <td>2, u</td>
+                <td>--</td>
+                <td><strong>2, x</strong></td>
+                <td>4, x</td>
+                <td>&infin;</td>
+              </tr>
+              <tr>
+                <td><strong>2</strong></td>
+                <td>{u, x, y}</td>
+                <td><strong>2, u</strong></td>
+                <td>--</td>
+                <td>--</td>
+                <td>3, y</td>
+                <td>4, y</td>
+              </tr>
+              <tr>
+                <td><strong>3</strong></td>
+                <td>{u, x, y, v}</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td><strong>3, y</strong></td>
+                <td>4, y</td>
+              </tr>
+              <tr>
+                <td><strong>4</strong></td>
+                <td>{u, x, y, v, w}</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td><strong>4, y</strong></td>
+              </tr>
+              <tr>
+                <td><strong>5</strong></td>
+                <td>{u, x, y, v, w, z}</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 style="color: var(--success); margin-top: 20px;">ตารางสรุป Routing Table ของเราเตอร์ u (คะแนนก้อนสุดท้าย):</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Destination</th>
+                <th>Link Path</th>
+                <th>Total Cost</th>
+                <th>Next Hop</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>v</strong></td><td>u &rarr; v</td><td>2</td><td><strong>v</strong></td></tr>
+              <tr><td><strong>x</strong></td><td>u &rarr; x</td><td>1</td><td><strong>x</strong></td></tr>
+              <tr><td><strong>y</strong></td><td>u &rarr; x &rarr; y</td><td>2</td><td><strong>x</strong></td></tr>
+              <tr><td><strong>w</strong></td><td>u &rarr; x &rarr; y &rarr; w</td><td>3</td><td><strong>x</strong></td></tr>
+              <tr><td><strong>z</strong></td><td>u &rarr; x &rarr; y &rarr; z</td><td>4</td><td><strong>x</strong></td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-warning" style="margin-top: 14px;">
+            💡 <strong>เทคนิคการทำข้อสอบ:</strong> ในแต่ละบรรทัด ให้มองหาโหนดนอก N' ที่มีค่า D() ต่ำที่สุด แล้วนำเข้า N' ในบรรทัดถัดไป จากนั้นอัปเดต (Relax) เพื่อนบ้านที่เชื่อมต่อกับโหนดที่เพิ่งเลือกเข้ามาใหม่</div>
+        </div>
+
+        <!-- SOLVER 3: VIRTUAL CIRCUIT -->
+        <div id="solver-vc" class="solver-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="color: var(--primary);">ข้อ 3: Virtual-Circuit Forwarding Table</h3>
+            <span class="badge badge-accent">12 Points</span>
+          </div>
+          <p style="font-size: 14px; margin-bottom: 12px;">
+            <strong>โจทย์:</strong> กำหนด Host H1 เชื่อมต่อกับ Switch 1 (Port 1), Switch 1 เชื่อมกับ Switch 2, Switch 2 เชื่อมกับ Switch 3, และ Switch 3 เชื่อมต่อไปยัง Host H2
+            <br>ในขั้นตอน Call Setup ระบบได้กำหนด VCI ตามลำดับ ให้เขียนตาราง Forwarding Table ของ Switch แต่ละตัวทั้งทิศทางไป (Forward: H1 &rarr; H2) และทิศทางกลับ (Reverse: H2 &rarr; H1)
+          </p>
+
+          <div class="diagram-container">
+            <svg width="600" height="120" viewBox="0 0 600 120">
+              <!-- Hosts -->
+              <rect x="20" y="40" width="60" height="40" rx="6" fill="#334155" stroke="#0369a1" stroke-width="2" />
+              <text x="50" y="65" text-anchor="middle" fill="#fff" font-weight="bold">H1</text>
+
+              <rect x="520" y="40" width="60" height="40" rx="6" fill="#334155" stroke="#10b981" stroke-width="2" />
+              <text x="550" y="65" text-anchor="middle" fill="#fff" font-weight="bold">H2</text>
+
+              <!-- Switches -->
+              <circle cx="170" cy="60" r="26" fill="#0284c7" />
+              <text x="170" y="65" text-anchor="middle" fill="#fff" font-weight="bold">SW 1</text>
+
+              <circle cx="300" cy="60" r="26" fill="#0284c7" />
+              <text x="300" y="65" text-anchor="middle" fill="#fff" font-weight="bold">SW 2</text>
+
+              <circle cx="430" cy="60" r="26" fill="#0284c7" />
+              <text x="430" y="65" text-anchor="middle" fill="#fff" font-weight="bold">SW 3</text>
+
+              <!-- Lines & Ports -->
+              <line x1="80" y1="60" x2="144" y2="60" stroke="#0369a1" stroke-width="2" />
+              <text x="110" y="52" text-anchor="middle" fill="#b45309" font-size="12">VCI: 12</text>
+
+              <line x1="196" y1="60" x2="274" y2="60" stroke="#0369a1" stroke-width="2" />
+              <text x="235" y="52" text-anchor="middle" fill="#b45309" font-size="12">VCI: 22</text>
+
+              <line x1="326" y1="60" x2="404" y2="60" stroke="#0369a1" stroke-width="2" />
+              <text x="365" y="52" text-anchor="middle" fill="#b45309" font-size="12">VCI: 32</text>
+
+              <line x1="456" y1="60" x2="520" y2="60" stroke="#0369a1" stroke-width="2" />
+              <text x="488" y="52" text-anchor="middle" fill="#b45309" font-size="12">VCI: 42</text>
+            </svg>
+          </div>
+
+          <div class="grid-2" style="margin-top: 14px;">
+            <div class="sub-card">
+              <h4 style="color: var(--primary); margin-bottom: 8px;">1. ขาไป: Forward Direction (H1 &rarr; H2)</h4>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">แพ็กเก็ตวิ่งจากซ้ายไปขวา:</p>
+              <table>
+                <thead>
+                  <tr><th>Switch</th><th>Incoming Port</th><th>Incoming VCI</th><th>Outgoing Port</th><th>Outgoing VCI</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>SW 1</strong></td><td>Port 1</td><td>12</td><td>Port 2</td><td><strong>22</strong></td></tr>
+                  <tr><td><strong>SW 2</strong></td><td>Port 1</td><td>22</td><td>Port 2</td><td><strong>32</strong></td></tr>
+                  <tr><td><strong>SW 3</strong></td><td>Port 1</td><td>32</td><td>Port 2</td><td><strong>42</strong></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="sub-card">
+              <h4 style="color: var(--success); margin-bottom: 8px;">2. ขากลับ: Reverse Direction (H2 &rarr; H1)</h4>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">กลับทิศทาง (Swap In &harr; Out):</p>
+              <table>
+                <thead>
+                  <tr><th>Switch</th><th>Incoming Port</th><th>Incoming VCI</th><th>Outgoing Port</th><th>Outgoing VCI</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>SW 3</strong></td><td>Port 2</td><td>42</td><td>Port 1</td><td><strong>32</strong></td></tr>
+                  <tr><td><strong>SW 2</strong></td><td>Port 2</td><td>32</td><td>Port 1</td><td><strong>22</strong></td></tr>
+                  <tr><td><strong>SW 1</strong></td><td>Port 2</td><td>22</td><td>Port 1</td><td><strong>12</strong></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="callout callout-info" style="margin-top: 14px;">
+            🔑 <strong>กฎเหล็ก Virtual Circuit:</strong> VCI มีขอบเขตเฉพาะ <em>Local Link-by-Link</em> เท่านั้น (Link แต่ละช่วงมีหมายเลข VCI ไม่จำเป็นต้องเหมือนกัน) สวิตช์มีหน้าที่แปลงคู่ <code>(In Port, In VCI) &rarr; (Out Port, Out VCI)</code></div>
+        </div>
+
+        <!-- SOLVER 4: STP -->
+        <div id="solver-stp" class="solver-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="color: var(--primary);">ข้อ 4: Spanning Tree Protocol (STP - IEEE 802.1D)</h3>
+            <span class="badge badge-accent">12 Points</span>
+          </div>
+          <p style="font-size: 14px; margin-bottom: 12px;">
+            <strong>โจทย์:</strong> สวิตช์ 3 ตัวเชื่อมกันเป็นวงรอบ (Loop) ดังนี้:
+            <br>• Switch A (Bridge ID: <code>4096.AAAA</code>)
+            <br>• Switch B (Bridge ID: <code>8192.BBBB</code>)
+            <br>• Switch C (Bridge ID: <code>32768.CCCC</code>)
+            <br>ลิงก์ทั้งหมดเป็นความเร็ว <strong>100 Mbps (Cost = 19)</strong>
+          </p>
+
+          <div class="diagram-container">
+            <svg width="450" height="200" viewBox="0 0 450 200">
+              <!-- Links -->
+              <line x1="225" y1="40" x2="100" y2="160" stroke="#10b981" stroke-width="3" />
+              <line x1="225" y1="40" x2="350" y2="160" stroke="#10b981" stroke-width="3" />
+              <line x1="100" y1="160" x2="350" y2="160" stroke="#ef4444" stroke-width="3" stroke-dasharray="6" />
+
+              <!-- Link Costs -->
+              <text x="140" y="90" fill="#0369a1" font-size="13">Cost=19</text>
+              <text x="290" y="90" fill="#0369a1" font-size="13">Cost=19</text>
+              <text x="225" y="185" text-anchor="middle" fill="#ef4444" font-size="13">Cost=19 (Blocked)</text>
+
+              <!-- Switch A (Root) -->
+              <rect x="175" y="15" width="100" height="50" rx="8" fill="#065f46" stroke="#10b981" stroke-width="2" />
+              <text x="225" y="36" text-anchor="middle" fill="#fff" font-weight="bold">Switch A (Root)</text>
+              <text x="225" y="52" text-anchor="middle" fill="#d1fae5" font-size="12">ID: 4096</text>
+
+              <!-- Switch B -->
+              <rect x="50" y="135" width="100" height="50" rx="8" fill="#1e293b" stroke="#0369a1" stroke-width="2" />
+              <text x="100" y="156" text-anchor="middle" fill="#fff" font-weight="bold">Switch B</text>
+              <text x="100" y="172" text-anchor="middle" fill="#475569" font-size="12">ID: 8192</text>
+
+              <!-- Switch C -->
+              <rect x="300" y="135" width="100" height="50" rx="8" fill="#1e293b" stroke="#0369a1" stroke-width="2" />
+              <text x="350" y="156" text-anchor="middle" fill="#fff" font-weight="bold">Switch C</text>
+              <text x="350" y="172" text-anchor="middle" fill="#475569" font-size="12">ID: 32768</text>
+            </svg>
+          </div>
+
+          <h4 style="color: var(--accent); margin-top: 16px;">ขั้นตอน 4 สเต็ปในการเขียนตอบข้อสอบ:</h4>
+          <div class="grid-2" style="margin-top: 10px;">
+            <div class="sub-card">
+              <h5 style="color: var(--primary); margin-bottom: 6px;">1. หา Root Bridge</h5>
+              <p style="font-size: 13px;">
+                เลือกตัวที่มี <strong>Bridge ID ต่ำสุด</strong> (Priority + MAC)
+                <br>&rarr; Switch A มี Priority <code>4096</code> ต่ำที่สุด &rarr; <strong>Switch A เป็น Root Bridge!</strong>
+                <br><em>(ทุกพอร์ตบน Root Bridge จะกลายเป็น Designated Port (DP) เสมอ)</em>
+              </p>
+            </div>
+
+            <div class="sub-card">
+              <h5 style="color: var(--primary); margin-bottom: 6px;">2. หา Root Port (RP) ของแต่ละสวิตช์</h5>
+              <p style="font-size: 13px;">
+                พอร์ตที่มี <strong>Root Path Cost ต่ำสุด</strong> วิ่งไปหา Root Bridge:
+                <br>• Switch B &rarr; พอร์ตชี้ไปหา A มี cost = 19 (เป็น <strong>RP</strong>)
+                <br>• Switch C &rarr; พอร์ตชี้ไปหา A มี cost = 19 (เป็น <strong>RP</strong>)
+              </p>
+            </div>
+
+            <div class="sub-card">
+              <h5 style="color: var(--primary); margin-bottom: 6px;">3. หา Designated Port (DP) ใน Segment (B - C)</h5>
+              <p style="font-size: 13px;">
+                บนสายเชื่อมโยงระหว่าง B และ C:
+                <br>• สวิตช์ B มี Root Path Cost = 19
+                <br>• สวิตช์ C มี Root Path Cost = 19
+                <br><em>เมื่อ Cost เท่ากัน ให้ดู Bridge ID ต่ำกว่า:</em> B (8192) ชนะ C (32768)
+                <br>&rarr; พอร์ตฝั่ง Switch B ชนะ เป็น <strong>Designated Port (DP)</strong>
+              </p>
+            </div>
+
+            <div class="sub-card">
+              <h5 style="color: var(--danger); margin-bottom: 6px;">4. หา Blocking Port (BP)</h5>
+              <p style="font-size: 13px;">
+                พอร์ตที่เหลือทั้งหมดซึ่งไม่ได้เป็น RP และไม่ได้เป็น DP:
+                <br>&rarr; พอร์ตบน Switch C ฝั่งที่ต่อกับ B จะกลายเป็น <strong>Blocking Port (Alternate Port)</strong>
+                <br><em>ผลลัพธ์:</em> ตัดวงจร Loop สำเร็จ เครือข่ายปลอดจาก Broadcast Storm!
+              </p>
+            </div>
+          </div>
+
+          <div class="callout callout-warning" style="margin-top: 14px;">
+            📌 <strong>ตารางค่า Port Cost ที่อาจารย์อาจเปลี่ยนตัวเลข:</strong>
+            <br>• 10 Mbps = <code>100</code> | 100 Mbps = <code>19</code> | 1 Gbps = <code>4</code> | 10 Gbps = <code>2</code></div>
+        </div>
+
+        <!-- SOLVER 5: SECURITY & ETHICS -->
+        <div id="solver-sec" class="solver-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="color: var(--primary);">ข้อ 5: Security & Ethics Case Analysis</h3>
+            <span class="badge badge-success">6 Points</span>
+          </div>
+          <div class="callout callout-danger" style="margin-bottom: 14px;">
+            <strong>โจทย์สถานการณ์จำลอง:</strong> ผู้โจมตีส่ง Gratuitous ARP ตอบกลับเครื่องเหยื่อ (Victim PC) ว่า MAC ของตนคือ IP ของ Default Gateway ส่งผลให้ทราฟฟิกทั้งหมดถูกเปลี่ยนเส้นทางผ่านเครื่องผู้โจมตี
+          </div>
+
+          <h4 style="color: var(--accent); margin-bottom: 8px;">1. การวิเคราะห์ภัยคุกคามตามสามเหลี่ยม CIA (CIA Triad):</h4>
+          <ul style="font-size: 14px; line-height: 1.8; padding-left: 20px; margin-bottom: 16px;">
+            <li><strong>ประเภทการโจมตี:</strong> ARP Spoofing / ARP Cache Poisoning ซึ่งเป็นการโจมตีแบบ <strong>Man-in-the-Middle (MitM)</strong></li>
+            <li><strong>ผลกระทบต่อ Confidentiality (ความลับ):</strong> ผู้โจมตีสามารถดักส่องและอ่านข้อมูลสำคัญ เช่น รหัสผ่าน, เซสชันคุกกี้, ข้อความส่วนตัว ที่ยังไม่ได้เข้ารหัส</li>
+            <li><strong>ผลกระทบต่อ Integrity (ความถูกต้อง):</strong> ผู้โจมตีสามารถดักจับและ <em>แก้ไขเปลี่ยนแปลงเนื้อหา (Tamper/Modify)</em> ก่อนส่งต่อไปยัง Gateway ปลายทางได้</li>
+            <li><strong>ทำไม Encryption ถึงไม่พอ?:</strong> การเข้ารหัสปกป้องเพียง Confidentiality แต่ถ้าไม่มีการเซ็นลายเซ็นดิจิทัล (MAC/Integrity check) ผู้โจมตีอาจสับเปลี่ยนข้อมูลหรือโจมตีซ้ำ (Replay attack) ได้</li>
+          </ul>
+
+          <h4 style="color: var(--primary); margin-bottom: 8px;">2. มาตรการป้องกันทางเทคนิค (Technical Mitigations):</h4>
+          <div class="grid-2">
+            <div class="sub-card">
+              <h5 style="color: var(--success); margin-bottom: 4px;">Dynamic ARP Inspection (DAI)</h5>
+              <p style="font-size: 13px;">ทำงานร่วมกับ <strong>DHCP Snooping</strong> เพื่อตรวจสอบแพ็กเก็ต ARP ทุกตัวกับ Binding Database หาก MAC ไม่ตรงกับ IP ที่ DHCP จ่ายจริง สวิตช์จะ Drop ทันที</p>
+            </div>
+            <div class="sub-card">
+              <h5 style="color: var(--success); margin-bottom: 4px;">Static ARP & Network Segmentation</h5>
+              <p style="font-size: 13px;">ล็อก Static ARP Table สำหรับ Default Gateway บนเครื่อง Server สำคัญ และแบ่งแยก VLAN (Private VLAN) ไม่ให้เครื่องลูกข่ายดักฟังกวนกันเอง</p>
+            </div>
+          </div>
+
+          <h4 style="color: var(--purple); margin-top: 16px; margin-bottom: 8px;">3. จริยธรรมวิศวกรเครือข่ายเมื่อต้องดักจับข้อมูล (Engineer's Ethical Duties):</h4>
+          <div class="step-box">✓ 1. Data Minimisation: ดักจับเฉพาะ Header หรือช่วงเวลา/โฮสต์ที่จำเป็นต่อการสืบสวนเท่านั้น ห้ามเก็บบันทึกทราฟฟิกทั้งหมดของทั้งบริษัทโดยไม่มีเหตุผล
+✓ 2. Secure & Time-limited Storage: ไฟล์ .pcap หรือ log ที่ดักจับมาต้องเข้ารหัส (AES-256) และกำหนดระยะเวลาทำลายทิ้งทันทีเมื่อเสร็จภารกิจ
+✓ 3. Strict Non-Disclosure: ห้ามนำ Credential, รหัสผ่าน, รูปภาพ หรือแชตส่วนตัวของพนักงานที่ติดมากับแพ็กเก็ตไปเปิดเผยหรือแสวงหาผลประโยชน์ส่วนตัวเด็ดขาด
+✓ 4. Adhere to Privacy Policy: ปฏิบัติตามกฎหมายคุ้มครองข้อมูลส่วนบุคคล (PDPA/GDPR) และนโยบายขององค์กรอย่างเคร่งครัด
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 4: MOCK EXAM SIMULATOR -->
+    <section id="tab-mockexam" class="tab-pane" style="display: none;">
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span>🎯 ข้อสอบจำลองเสมือนจริง (Interactive Mock Exam Simulator)</span>
+          </div>
+          <div>
+            <span id="score-badge" class="badge badge-accent">คะแนนของคุณ: 0 / 20</span>
+          </div>
+        </div>
+
+        <p style="font-size: 14px; margin-bottom: 16px; color: var(--text-muted);">
+          ชุดแบบฝึกหัดปรนัย 20 ข้อเพื่อทดสอบความแม่นยำดักจุดหลอกตามแนวข้อสอบ Part A และหลักการของ Part B:
+        </p>
+
+        <div id="quiz-container">
+          <!-- Questions will be rendered by JS -->
+        </div>
+
+        <div style="margin-top: 20px; display: flex; gap: 12px;">
+          <button class="btn btn-accent" onclick="submitExam()">📝 ส่งตรวจคำตอบทั้งหมด</button>
+          <button class="btn btn-outline" onclick="resetExam()">🔄 เริ่มทำใหม่</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: CHEAT SHEET -->
+    <section id="tab-cheatsheet" class="tab-pane" style="display: none;">
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span>📑 สูตรลัดและตารางเทียบจำด่วนก่อนเข้าห้องสอบ (Cheat Sheet)</span>
+          </div>
+          <span class="badge badge-primary">Quick Review</span>
+        </div>
+
+        <div class="grid-2">
+          <!-- Col 1 -->
+          <div>
+            <div class="sub-card" style="margin-bottom: 16px;">
+              <h4 style="color: var(--primary); margin-bottom: 8px;">1. Subnetting & Addressing</h4>
+              <table>
+                <thead>
+                  <tr><th>Prefix</th><th>Subnet Mask</th><th>Total IPs</th><th>Usable Hosts (2<sup>n</sup>-2)</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>/24</td><td>255.255.255.0</td><td>256</td><td>254</td></tr>
+                  <tr><td>/25</td><td>255.255.255.128</td><td>128</td><td>126</td></tr>
+                  <tr><td>/26</td><td>255.255.255.192</td><td>64</td><td><strong>62</strong> (/24 แบ่งได้ 4 ซับเน็ต)</td></tr>
+                  <tr><td>/27</td><td>255.255.255.224</td><td>32</td><td>30</td></tr>
+                  <tr><td>/28</td><td>255.255.255.240</td><td>16</td><td>14</td></tr>
+                  <tr><td>/30</td><td>255.255.255.252</td><td>4</td><td>2 (สาย Point-to-Point)</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="sub-card">
+              <h4 style="color: var(--accent); margin-bottom: 8px;">2. STP Standard Port Costs (IEEE 802.1D)</h4>
+              <table>
+                <thead>
+                  <tr><th>ความเร็วลิงก์ (Bandwidth)</th><th>STP Path Cost (จำเข้าสอบ!)</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>10 Mbps</strong></td><td><strong style="color: var(--accent);">100</strong></td></tr>
+                  <tr><td><strong>100 Mbps (Fast Ethernet)</strong></td><td><strong style="color: var(--accent);">19</strong></td></tr>
+                  <tr><td><strong>1 Gbps (Gigabit Ethernet)</strong></td><td><strong style="color: var(--accent);">4</strong></td></tr>
+                  <tr><td><strong>10 Gbps</strong></td><td><strong style="color: var(--accent);">2</strong></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Col 2 -->
+          <div>
+            <div class="sub-card" style="margin-bottom: 16px;">
+              <h4 style="color: var(--success); margin-bottom: 8px;">3. Routing Protocol Comparison Matrix</h4>
+              <table>
+                <thead>
+                  <tr><th>คุณสมบัติ</th><th>RIP</th><th>OSPF</th><th>BGP</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>ประเภท</strong></td><td>Distance-Vector</td><td>Link-State</td><td>Path-Vector</td></tr>
+                  <tr><td><strong>อัลกอริทึม</strong></td><td>Bellman-Ford</td><td>Dijkstra</td><td>Best Policy</td></tr>
+                  <tr><td><strong>Metric</strong></td><td>Hop count (สูงสุด 15)</td><td>Cost (1/Bandwidth)</td><td>AS Path & Policies</td></tr>
+                  <tr><td><strong>ขอบเขต</strong></td><td>ภายใน AS (IGP ขนาดเล็ก)</td><td>ภายใน AS (IGP แบ่ง Area)</td><td>ระหว่าง AS (EGP ข้ามโลก)</td></tr>
+                  <tr><td><strong>การส่งข่าวสาร</strong></td><td>แลกเปลี่ยนกับเพื่อนบ้าน</td><td>Flood LSA ทั่วทั้ง Area</td><td>ส่งเฉพาะ Route Changes</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="sub-card">
+              <h4 style="color: var(--danger); margin-bottom: 8px;">4. ตารางดักคำหลอกยอดฮิต (Exam Trap Warnings)</h4>
+              <ul style="font-size: 13px; line-height: 1.8; padding-left: 20px;">
+                <li>❌ <strong>หลอก:</strong> Checksum สามารถแก้ไขข้อมูลที่ผิดพลาดได้<br>✅ <strong>จริง:</strong> Checksum และ CRC ใช้ <em>Detect เท่านั้น</em> ถ้าจะแก้ไขต้องใช้ FEC!</li>
+                <li>❌ <strong>หลอก:</strong> Wi-Fi ใช้ CSMA/CD ในการเข้าถึงสื่อ<br>✅ <strong>จริง:</strong> Wi-Fi ใช้ <em>CSMA/CA</em> (Wired Ethernet ถึงใช้ CSMA/CD)</li>
+                <li>❌ <strong>หลอก:</strong> Encryption การันตีทั้ง Confidentiality และ Integrity<br>✅ <strong>จริง:</strong> Encryption รับประกันแค่ <em>Confidentiality</em> ส่วน Integrity ต้องใช้ Hash/MAC เพิ่มเติม</li>
+                <li>❌ <strong>หลอก:</strong> Switch เรียนรู้ MAC Address จาก Destination MAC<br>✅ <strong>จริง:</strong> Switch เรียนรู้จาก <em>Source MAC</em> เสมอ!</li>
+                <li>❌ <strong>หลอก:</strong> ICMP ใช้ส่ง User Payload ข้อมูลผู้ใช้<br>✅ <strong>จริง:</strong> ICMP มีไว้ <em>Error Reporting และ Network Diagnostics (เช่น Ping, Traceroute)</em></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 6: VARA LECTURE VAULT -->
+    <section id="tab-vara" class="tab-pane" style="display: none;">
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span>📺 คลังคลิปบรรยายและแอนิเมชัน อ.วรา (Vara Varavithya Lecture Vault)</span>
+          </div>
+          <div>
+            <a href="https://www.youtube.com/@varavithya" target="_blank" class="badge badge-danger" style="text-decoration: none; font-size: 13px;">🔴 YouTube: @varavithya</a>
+          </div>
+        </div>
+
+        <div class="callout callout-info" style="margin-bottom: 20px;">
+          📌 <strong>ข้อมูลเชิงลึกจากการสำรวจช่อง อ.วรา:</strong> อาจารย์มีเพลย์ลิสต์สอนตรงตามวิชาและแนวข้อสอบชุดนี้ 2 เพลย์ลิสต์หลักคือ:
+          <br>1. <strong>Computer Networks Class:</strong> บรรยายกระดาน/สไลด์เชิงลึกครบทุกบท พร้อมแสดงวิธีทำโจทย์ข้อสอบจริง
+          <br>2. <strong>Network Animate Explaination:</strong> ภาพเคลื่อนไหวแอนิเมชันจำลองการทำงานจริง (CSMA/CA, Hidden Node, Packet Queueing) ช่วยสร้างความเข้าใจเชิงภาพได้แม่นยำที่สุด
+        </div>
+
+        <!-- Part B Video Mapping -->
+        <h3 style="color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+          <span>🎯 คลิปติวตรงจุดสำหรับ 5 ข้อเขียน Part B (60 คะแนนเต็ม)</span>
+        </h3>
+
+        <div class="grid-2" style="margin-bottom: 24px;">
+          <!-- Card RIP -->
+          <div class="sub-card" style="border-left: 4px solid var(--primary);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <h4 style="color: var(--primary);">ข้อ 1: Distance Vector Routing (RIP)</h4>
+              <span class="badge badge-primary">15 คะแนน</span>
+            </div>
+            <p style="font-size: 13px; margin-bottom: 8px;">
+              <strong>คลิปบรรยายของ อ.วรา:</strong>
+              <br><a href="https://www.youtube.com/watch?v=5jRQYdFuXKo" target="_blank" style="color: #0369a1; text-decoration: underline; font-weight: bold;">▶ Lecture 13.1: Distance Vector Routing (RIP) (30 นาที)</a>
+            </p>
+            <div class="step-box" style="font-size: 13px;">🎯 ประเด็นที่ควรดูในคลิปนี้ (สรุปจากสไลด์ + แนวข้อสอบ):
+- การสร้างตารางเริ่มต้น (Round 0) และการคำนวณ Bellman-Ford ใน Round 1-2
+- ปัญหา Count-to-Infinity: อธิบายละเอียดว่าเมื่อลิงก์ขาด ทำไม Router ถึงเข้าใจผิดวนส่งแพ็กเก็ตหากันจน Cost พุ่งเกิน 15
+- Split Horizon with Poison Reverse: ทำไมต้องส่ง Infinity ย้อนกลับไปยังเพื่อนบ้านที่ส่ง Route มาให้ เพื่อตัดลูปทันที
+            </div>
+          </div>
+
+          <!-- Card OSPF -->
+          <div class="sub-card" style="border-left: 4px solid var(--primary);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <h4 style="color: var(--primary);">ข้อ 2: Link State Routing (OSPF & Dijkstra)</h4>
+              <span class="badge badge-primary">15 คะแนน</span>
+            </div>
+            <p style="font-size: 13px; margin-bottom: 8px;">
+              <strong>คลิปบรรยายของ อ.วรา:</strong>
+              <br><a href="https://www.youtube.com/watch?v=iwcQNC7pmp8" target="_blank" style="color: #0369a1; text-decoration: underline; font-weight: bold;">▶ Lecture 14: Link State Routing (OSPF) (30 นาที)</a>
+              <br><a href="https://www.youtube.com/watch?v=hClfRfh6lYQ" target="_blank" style="color: #475569; text-decoration: underline; font-size: 13px;">▶ Lecture 14.1: Routing Metrics (16 นาที)</a>
+            </p>
+            <div class="step-box" style="font-size: 13px;">🎯 ประเด็นที่ควรดูในคลิปนี้ (สรุปจากสไลด์ + แนวข้อสอบ):
+- การกระจายสถานะลิงก์ด้วย LSA Flooding ให้ทุกตัวมี Global Topology เหมือนกัน
+- ขั้นตอนการรัน Dijkstra แสดงตาราง N', D(v), p(v) ทีละแถวอย่างเป็นระบบ
+- การสรุปตาราง Forwarding Table สุดท้าย (Destination, Total Cost, Next Hop)
+            </div>
+          </div>
+
+          <!-- Card VC -->
+          <div class="sub-card" style="border-left: 4px solid var(--accent);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <h4 style="color: var(--accent);">ข้อ 3: Virtual Circuit Switching Table</h4>
+              <span class="badge badge-accent">12 คะแนน</span>
+            </div>
+            <p style="font-size: 13px; margin-bottom: 8px;">
+              <strong>คลิปบรรยายของ อ.วรา:</strong>
+              <br><a href="https://www.youtube.com/watch?v=JvupTb_HJfM" target="_blank" style="color: #b45309; text-decoration: underline; font-weight: bold;">▶ Lecture 8.1: Virtual Circuit (37 นาที)</a>
+              <br><a href="https://www.youtube.com/watch?v=m9Km7h3bmpI" target="_blank" style="color: #475569; text-decoration: underline; font-size: 13px;">▶ Lecture 8: Datagram (25 นาที)</a>
+            </p>
+            <div class="step-box" style="font-size: 13px;">🎯 ประเด็นที่ควรดูในคลิปนี้ (สรุปจากสไลด์ + แนวข้อสอบ):
+- ความแตกต่างระหว่าง Virtual Circuit vs Datagram (Call Setup Phase)
+- การสร้าง Forwarding Table ของ Switch แต่ละตัว: คู่ (In Port, In VCI) &rarr; (Out Port, Out VCI)
+- การเขียนตารางขากลับ (Reverse Direction): สลับ In &harr; Out ให้ถูกต้อง
+            </div>
+          </div>
+
+          <!-- Card STP -->
+          <div class="sub-card" style="border-left: 4px solid var(--accent);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <h4 style="color: var(--accent);">ข้อ 4: Spanning Tree Protocol (STP 802.1D)</h4>
+              <span class="badge badge-accent">12 คะแนน</span>
+            </div>
+            <p style="font-size: 13px; margin-bottom: 8px;">
+              <strong>คลิปบรรยายของ อ.วรา:</strong>
+              <br><a href="https://www.youtube.com/watch?v=DF1txkTFjFE" target="_blank" style="color: #b45309; text-decoration: underline; font-weight: bold;">▶ Lecture 9: Spanning Tree (40 นาที)</a>
+            </p>
+            <div class="step-box" style="font-size: 13px;">🎯 ประเด็นที่ควรดูในคลิปนี้ (สรุปจากสไลด์ + แนวข้อสอบ):
+- การแลกเปลี่ยน BPDU และการเลือก Root Bridge (Lowest Bridge ID)
+- การหา Root Port (RP) ของแต่ละตัว (พอร์ตที่ Cost ไปหา Root Bridge ต่ำสุด)
+- การหา Designated Port (DP) ในแต่ละ Segment (Cost ต่ำกว่าชนะ, ถ้าเท่ากันดู ID ต่ำกว่า)
+- พอร์ตที่เหลือกลายเป็น Blocking Port ป้องกัน Loop และ Broadcast Storm
+            </div>
+          </div>
+        </div>
+
+        <!-- Part A Video Mapping & Animations -->
+        <h3 style="color: var(--primary); margin-bottom: 12px;">
+          <span>🌐 คลิปบรรยายและแอนิเมชันสำหรับ Part A (ปรนัย 70 คะแนน)</span>
+        </h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>หัวข้อในข้อสอบ</th>
+              <th>คลิปบรรยาย / แอนิเมชันของ อ.วรา</th>
+              <th>ความยาว</th>
+              <th>จุดสำคัญที่ข้อสอบชอบออกหลอก</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>IP Addressing & Subnetting</strong></td>
+              <td><a href="https://www.youtube.com/watch?v=n4hX2ppQKcg" target="_blank" style="color: #0369a1;">▶ Lecture 11: IP Addressing, Subnetting, CIDER</a></td>
+              <td>44 นาที</td>
+              <td>การยืมบิต (/24 &rarr; four /26), การคำนวณ Host ที่ใช้ได้ <code>2<sup>n</sup> - 2</code></td>
+            </tr>
+            <tr>
+              <td><strong>ARP & DHCP</strong></td>
+              <td><a href="https://www.youtube.com/watch?v=4qjASiSFGlw" target="_blank" style="color: #0369a1;">▶ Lecture 12: ARP DHCP</a></td>
+              <td>23 นาที</td>
+              <td>DHCP 4 ขั้นตอน (DORA), ช่องโหว่ ARP Spoofing และการใช้ DAI ป้องกัน</td>
+            </tr>
+            <tr>
+              <td><strong>Error Detection (CRC)</strong></td>
+              <td><a href="https://www.youtube.com/watch?v=Nm7sTZWQmSg" target="_blank" style="color: #0369a1;">▶ Lecture CRC 2012 (การหารพหุนาม)</a></td>
+              <td>28 นาที</td>
+              <td>Checksum/CRC ทำหน้าที่เพียง <em>Detect</em> ไม่สามารถแก้บิตได้ (แก้ต้องใช้ FEC)</td>
+            </tr>
+            <tr>
+              <td><strong>Ethernet & CSMA/CD</strong></td>
+              <td><a href="https://www.youtube.com/watch?v=uhUiDMKh6XE" target="_blank" style="color: #0369a1;">▶ Lecture 7: Ethernet</a></td>
+              <td>48 นาที</td>
+              <td>Jam signal, Exponential Backoff, CSMA/CD ใช้บนสายแลนเท่านั้น</td>
+            </tr>
+            <tr>
+              <td><strong>Wi-Fi & CSMA/CA</strong></td>
+              <td><a href="https://www.youtube.com/watch?v=VakSyHtgGU0" target="_blank" style="color: #0369a1;">▶ Lecture 7.1: Wi-Fi</a></td>
+              <td>55 นาที</td>
+              <td>ทำไม Wi-Fi ใช้ CD ไม่ได้, การใช้ CSMA/CA หลีกเลี่ยงการชน</td>
+            </tr>
+            <tr>
+              <td><strong>แอนิเมชัน: CSMA/CA</strong></td>
+              <td><a href="https://www.youtube.com/watch?v=OMaIzTtiYfA" target="_blank" style="color: #047857;">🎬 Animation: CSMA/CA in actions</a></td>
+              <td>4 นาที</td>
+              <td>ลำดับ DIFS, Contention Window, SIFS และการส่ง ACK</td>
+            </tr>
+            <tr>
+              <td><strong>แอนิเมชัน: Hidden Node</strong></td>
+              <td><a href="https://www.youtube.com/watch?v=eerVKtuQ2do" target="_blank" style="color: #047857;">🎬 Animation: CSMA/CA with hidden nodes</a></td>
+              <td>4 นาที</td>
+              <td>การแก้ปัญหา Hidden Terminal ด้วย <strong>RTS/CTS Handshake</strong></td>
+            </tr>
+            <tr>
+              <td><strong>แอนิเมชัน: Delays</strong></td>
+              <td><a href="https://www.youtube.com/watch?v=Irgrf3fYVYs" target="_blank" style="color: #047857;">🎬 Propagation vs Transmission Delay</a></td>
+              <td>3 นาที</td>
+              <td>แยกแยะ <code>d_trans = L/R</code> กับ <code>d_prop = d/s</code> ให้แม่นยำ</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Tab Switching
+    function switchMainTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.style.display = 'block';
+
+      // update nav active
+      const btns = document.querySelectorAll('.nav-btn');
+      btns.forEach(btn => {
+        if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId)) {
+          btn.classList.add('active');
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Solver Subtab Switching
+    function switchSolverTab(solverId) {
+      document.querySelectorAll('.solver-content').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.solver-tabs .tab-btn').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById('solver-' + solverId);
+      if (target) target.style.display = 'block';
+
+      const btns = document.querySelectorAll('.solver-tabs .tab-btn');
+      btns.forEach(btn => {
+        if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(solverId)) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    // Mock Exam Engine
+    const QUESTIONS = [
+      {
+        id: 1,
+        prompt: "ข้อใดกล่าวถูกต้องเกี่ยวกับความแตกต่างระหว่าง CSMA/CD และ CSMA/CA?",
+        options: [
+          { text: "CSMA/CD ใช้บน Wi-Fi ส่วน CSMA/CA ใช้บน Wired Ethernet", correct: false },
+          { text: "CSMA/CD ตรวจจับการชนขณะส่งบนสายแลน ส่วน CSMA/CA หลีกเลี่ยงการชนบนเครือข่ายไร้สาย 802.11", correct: true },
+          { text: "CSMA/CA ใช้วิธีส่ง Jam signal เมื่อเกิดการชน", correct: false },
+          { text: "ทั้งสองโปรโตคอลแก้ไขข้อผิดพลาดของบิตได้โดยตรง (FEC)", correct: false }
+        ],
+        rationale: "CSMA/CD (Collision Detection) ใช้บน Wired Ethernet ส่วน CSMA/CA (Collision Avoidance) ใช้บน 802.11 Wi-Fi เนื่องจากสถานะไร้สายไม่สามารถตรวจจับสัญญาณชนขณะส่งข้อมูลได้"
+      },
+      {
+        id: 2,
+        prompt: "หากนำ IP Address บล็อก 192.168.1.0/24 มาแบ่งออกเป็น 4 ซับเน็ตเท่าๆ กัน แต่ละซับเน็ตจะมีจำนวน Host ที่ใช้งานได้จริงกี่เครื่อง?",
+        options: [
+          { text: "64 เครื่อง", correct: false },
+          { text: "62 เครื่อง", correct: true },
+          { text: "30 เครื่อง", correct: false },
+          { text: "126 เครื่อง", correct: false }
+        ],
+        rationale: "แบ่งเป็น 4 ซับเน็ต ต้องยืม 2 บิต (2^2 = 4) prefix จึงกลายเป็น /26 ทำให้แต่ละซับเน็ตมี 64 IP addresses โดยสูตร host ที่ใช้งานได้คือ 2^n - 2 = 64 - 2 = 62 เครื่อง"
+      },
+      {
+        id: 3,
+        prompt: "ในโพรโทคอล RIP (Routing Information Protocol) หากเส้นทางมีค่า Hop Count เท่ากับ 16 มีความหมายว่าอย่างไร?",
+        options: [
+          { text: "เป็นเส้นทางที่เร็วที่สุด", correct: false },
+          { text: "เส้นทางนั้นเข้าไม่ถึง (Unreachable)", correct: true },
+          { text: "เป็นเส้นทางสำรอง (Standby Route)", correct: false },
+          { text: "เครือข่ายเกิด Broadcast Storm", correct: false }
+        ],
+        rationale: "RIP กำหนดระยะทางสูงสุดไว้ที่ 15 hops ดังนั้น hop count ที่ 16 จึงหมายถึง Unreachable (เข้าไม่ถึง) เพื่อจำกัดปัญหา Count-to-Infinity"
+      },
+      {
+        id: 4,
+        prompt: "Spanning Tree Protocol (STP 802.1D) กำหนดค่า Port Cost สำหรับพอร์ตความเร็ว 100 Mbps (Fast Ethernet) ไว้เท่าใด?",
+        options: [
+          { text: "100", correct: false },
+          { text: "19", correct: true },
+          { text: "4", correct: false },
+          { text: "2", correct: false }
+        ],
+        rationale: "มาตรฐาน IEEE 802.1D กำหนดค่า STP Port Cost: 10 Mbps = 100, 100 Mbps = 19, 1 Gbps = 4, 10 Gbps = 2"
+      },
+      {
+        id: 5,
+        prompt: "กลไก Split-Horizon with Poison Reverse มีบทบาทสำคัญในการแก้ไขปัญหาใดใน Distance-Vector Routing?",
+        options: [
+          { text: "แก้ปัญหา Hidden Terminal", correct: false },
+          { text: "แก้ปัญหา Count-to-Infinity เมื่อมีลิงก์ขาด", correct: true },
+          { text: "แก้ปัญหา Buffer Overflow บน Router", correct: false },
+          { text: "ลดขนาดของ MTU ในเฟรม", correct: false }
+        ],
+        rationale: "Poison Reverse แก้ปัญหา Count-to-Infinity โดยการให้เราเตอร์โฆษณาค่าทางกลับไปยังเพื่อนบ้านที่ตนเองเรียนรู้เส้นทางมาเป็นอนันต์ (Infinity) ทันที"
+      },
+      {
+        id: 6,
+        prompt: "สวิตช์เรียนรู้ตำแหน่งของอุปกรณ์ (MAC Address Table) จากส่วนใดของเฟรมที่วิ่งเข้ามา?",
+        options: [
+          { text: "Destination MAC Address", correct: false },
+          { text: "Source MAC Address", correct: true },
+          { text: "VLAN Tag 802.1Q", correct: false },
+          { text: "Frame Check Sequence (FCS)", correct: false }
+        ],
+        rationale: "Switch Self-Learning จะบันทึกคู่ MAC และ Port โดยอ่านจาก Source MAC ของเฟรมที่เข้ามาเสมอ หากไม่รู้จัก Destination MAC สวิตช์จึงจะทำการ Flooding"
+      },
+      {
+        id: 7,
+        prompt: "ข้อใดกล่าวถูกต้องเกี่ยวกับ Error Detection ด้วย Checksum และ CRC?",
+        options: [
+          { text: "Checksum สามารถแก้ไขข้อมูลบิตที่ผิดพลาดได้เอง", correct: false },
+          { text: "ทั้ง Checksum และ CRC ทำหน้าที่เพียงตรวจจับ (Detect) ความผิดพลาด ไม่สามารถแก้ไขบิตได้", correct: true },
+          { text: "CRC เป็นกลไกที่ทำงานบน Transport Layer", correct: false },
+          { text: "CRC ให้ความแม่นยำต่ำกว่า Checksum แบบธรรมดา", correct: false }
+        ],
+        rationale: "Checksum และ CRC ทำหน้าที่เพียง Detect ไม่สามารถแก้ไขบิตที่ผิดพลาดได้ หากต้องการแก้ไขจะต้องใช้เทคนิค FEC (Forward Error Correction)"
+      },
+      {
+        id: 8,
+        prompt: "ปัญหา Hidden Terminal บนเครือข่าย Wi-Fi 802.11 สามารถแก้ไขได้ด้วยกลไกใด?",
+        options: [
+          { text: "Poison Reverse", correct: false },
+          { text: "RTS / CTS Handshake", correct: true },
+          { text: "Spanning Tree Protocol", correct: false },
+          { text: "DHCP Snooping", correct: false }
+        ],
+        rationale: "Hidden Terminal แก้ไขได้ด้วยการส่ง RTS (Request to Send) และ AP ตอบกลับด้วย CTS (Clear to Send) เพื่อแจ้งให้สถานีรอบข้างหยุดส่งข้อมูลชั่วคราว"
+      },
+      {
+        id: 9,
+        prompt: "การโจมตีแบบ ARP Spoofing / Cache Poisoning ส่งผลกระทบต่อแกนความปลอดภัยใดใน CIA Triad?",
+        options: [
+          { text: "เฉพาะ Availability เท่านั้น", correct: false },
+          { text: "ทั้ง Confidentiality (แอบดักอ่าน) และ Integrity (ปลอมแปลงแก้ไขข้อมูล)", correct: true },
+          { text: "ไม่กระทบต่อความมั่นคงปลอดภัยหากมีการใช้ HTTPS", correct: false },
+          { text: "กระทบเฉพาะ Layer 7 Application Layer", correct: false }
+        ],
+        rationale: "ARP Spoofing เป็นการโจมตีแบบ Man-in-the-Middle ทำให้ผู้โจมตีดักอ่านแพ็กเก็ต (กระทบ Confidentiality) และแก้ไขเปลี่ยนแปลงแพ็กเก็ตก่อนส่งต่อ (กระทบ Integrity)"
+      },
+      {
+        id: 10,
+        prompt: "เทคโนโลยีใดในสวิตช์ที่ใช้ป้องกันการโจมตีแบบ ARP Spoofing ได้อย่างมีประสิทธิภาพสูงสุด?",
+        options: [
+          { text: "Spanning Tree Protocol (STP)", correct: false },
+          { text: "Dynamic ARP Inspection (DAI) ควบคู่กับ DHCP Snooping", correct: true },
+          { text: "OSPF LSA Flooding", correct: false },
+          { text: "Split Horizon", correct: false }
+        ],
+        rationale: "DAI ทำหน้าที่ตรวจสอบ ARP packet กับฐานข้อมูล DHCP Snooping Binding Table เพื่อ Drop ARP ปลอมทิ้งทันที"
+      },
+      {
+        id: 11,
+        prompt: "ข้อใดคือความแตกต่างสำคัญระหว่าง Virtual Circuit (VC) กับ Datagram Network?",
+        options: [
+          { text: "Datagram ต้องทำ Call Setup ก่อนส่งข้อมูลเสมอ", correct: false },
+          { text: "Virtual Circuit ต้องผ่านขั้นตอน Call Setup เพื่อจองเส้นทางและหมายเลข VCI ก่อนส่งข้อมูลจริง", correct: true },
+          { text: "Virtual Circuit มีการสลับลำดับของ Packet บ่อยครั้ง", correct: false },
+          { text: "Datagram รับประกัน Delay และ Bandwidth เสมอ", correct: false }
+        ],
+        rationale: "Virtual Circuit จำเป็นต้องผ่าน Call Setup เพื่อสร้างเส้นทางถาวรและกำหนด VCI ก่อนส่งข้อมูล ส่วน Datagram ไร้การเชื่อมต่อ ส่งทีละ packet แบบ Best-Effort"
+      },
+      {
+        id: 12,
+        prompt: "จริยธรรมของวิศวกรเครือข่ายเมื่อต้องดักจับทราฟฟิกข้อมูล (Packet Sniffing) ข้อใดถูกต้องที่สุด?",
+        options: [
+          { text: "สามารถเก็บข้อมูลรหัสผ่านและแชตส่วนตัวไว้ศึกษาได้โดยไม่ต้องแจ้งใคร", correct: false },
+          { text: "ยึดหลัก Data Minimisation (ดักจับเฉพาะข้อมูลที่จำเป็น) และทำลายทิ้งตามระยะเวลาที่กำหนด", correct: true },
+          { text: "สามารถเปิดเผยข้อมูลทราฟฟิกให้เพื่อนร่วมงานดูได้หากน่าสนใจ", correct: false },
+          { text: "ไม่จำเป็นต้องเข้ารหัสไฟล์ Log ที่ดักจับมา", correct: false }
+        ],
+        rationale: "วิศวกรเครือข่ายต้องยึดหลัก Data Minimisation, Secure Storage, Time-limited retention และห้ามเปิดเผยข้อมูลส่วนบุคคลเด็ดขาด"
+      },
+      {
+        id: 13,
+        prompt: "ในเครือข่าย OSPF อัลกอริทึมใดที่ถูกใช้เพื่อคำนวณ Shortest Path Tree บนตัวเราเตอร์?",
+        options: [
+          { text: "Bellman-Ford Algorithm", correct: false },
+          { text: "Dijkstra's Algorithm", correct: true },
+          { text: "Floyd-Warshall Algorithm", correct: false },
+          { text: "Kruskal's Algorithm", correct: false }
+        ],
+        rationale: "OSPF เป็น Link-State Protocol ซึ่งใช้ Dijkstra's Algorithm ในการคำนวณหาเส้นทางที่สั้นที่สุด"
+      },
+      {
+        id: 14,
+        prompt: "โพรโทคอล ICMP (Internet Control Message Protocol) มีหน้าที่หลักคืออะไร?",
+        options: [
+          { text: "ใช้สำหรับโอนถ่ายไฟล์ข้อมูลขนาดใหญ่ระหว่างเครื่องลูกข่าย", correct: false },
+          { text: "รายงานข้อผิดพลาดและวินิจฉัยสถานะเครือข่าย เช่น Ping และ Traceroute", correct: true },
+          { text: "แจกจ่ายหมายเลข IP และ DNS ให้อัตโนมัติ", correct: false },
+          { text: "แปลง Private IP ให้เป็น Public IP", correct: false }
+        ],
+        rationale: "ICMP ใช้สำหรับ Error Reporting และ Diagnostics ไม่ได้ใช้สำหรับส่ง Application Data ทั่วไป"
+      },
+      {
+        id: 15,
+        prompt: "การเชื่อมต่อระหว่างสวิตช์สองตัวเพื่อส่งผ่านข้อมูลของหลายๆ VLAN พร้อมกัน ต้องใช้พอร์ตประเภทใดและติด Tag มาตรฐานใด?",
+        options: [
+          { text: "Access Port ติด Tag 802.11", correct: false },
+          { text: "Trunk Port ติด Tag IEEE 802.1Q", correct: true },
+          { text: "Console Port ติด Tag CSMA/CD", correct: false },
+          { text: "Mirror Port ติด Tag 802.3", correct: false }
+        ],
+        rationale: "Trunk Port ใช้สำหรับส่งทราฟฟิกหลาย VLAN ข้ามระหว่างสวิตช์ โดยทำการแนบ Tag ตามมาตรฐาน IEEE 802.1Q"
+      },
+      {
+        id: 16,
+        prompt: "ในกระบวนการเลือก Root Bridge ของ STP สวิตช์ตัวใดจะได้รับเลือกเป็น Root Bridge?",
+        options: [
+          { text: "สวิตช์ที่มี Bridge ID (Priority + MAC) สูงที่สุด", correct: false },
+          { text: "สวิตช์ที่มี Bridge ID (Priority + MAC) ต่ำที่สุด", correct: true },
+          { text: "สวิตช์ที่มีจำนวนพอร์ตมากที่สุด", correct: false },
+          { text: "สวิตช์ที่เปิดเครื่องใช้งานก่อนเป็นตัวแรก", correct: false }
+        ],
+        rationale: "STP จะเลือกสวิตช์ที่มี Bridge ID ต่ำที่สุด (Lowest Bridge ID) เป็น Root Bridge เสมอ"
+      },
+      {
+        id: 17,
+        prompt: "ข้อใดเป็นจริงเกี่ยวกับการเข้ารหัส (Encryption) ในความมั่นคงปลอดภัยของเครือข่าย?",
+        options: [
+          { text: "การเข้ารหัสช่วยป้องกันไม่ให้ข้อมูลถูกดัดแปลงแก้ไขได้ 100%", correct: false },
+          { text: "การเข้ารหัสรับประกันความลับ (Confidentiality) แต่ไม่ได้รับประกันความถูกต้องสมบูรณ์ (Integrity) โดยลำพัง", correct: true },
+          { text: "การเข้ารหัสแทนที่การทำ Authentication ทั้งหมด", correct: false },
+          { text: "การเข้ารหัสป้องกันการโจมตีแบบ DoS ได้อย่างสมบูรณ์", correct: false }
+        ],
+        rationale: "การเข้ารหัสปกป้องเพียง Confidentiality การจะรับประกัน Integrity จำเป็นต้องมีกลไกอื่นเสริม เช่น Cryptographic Hash, HMAC หรือ Digital Signature"
+      },
+      {
+        id: 18,
+        prompt: "ข้อใดกล่าวถูกต้องเกี่ยวกับ 5G เมื่อเปรียบเทียบกับ 4G?",
+        options: [
+          { text: "5G ใช้ CSMA/CD เหมือนกับสายแลน", correct: false },
+          { text: "5G มี Latency ต่ำกว่ามาก และรองรับ Massive IoT และ Edge Computing", correct: true },
+          { text: "5G ส่งข้อมูลได้ช้ากว่าแต่เสถียรกว่า 4G ในทุกย่านความถี่", correct: false },
+          { text: "5G ไม่ใช้ Access Point ใดๆ ในการเชื่อมต่อ", correct: false }
+        ],
+        rationale: "5G มีความเร็วสูงกว่า Latency ต่ำมาก (ระดับ 1 ms) รองรับอุปกรณ์ IoT หนาแน่นสูง และมีกลไกควบคุมสื่อของตนเอง ไม่ได้ใช้ CSMA/CD"
+      },
+      {
+        id: 19,
+        prompt: "บน Ethernet Frame ฟิลด์ Frame Check Sequence (FCS) บรรจุข้อมูลใดเพื่อใช้ตรวจสอบความสมบูรณ์ของเฟรม?",
+        options: [
+          { text: "Checksum 16-bit", correct: false },
+          { text: "CRC (Cyclic Redundancy Check) 32-bit", correct: true },
+          { text: "MD5 Hash", correct: false },
+          { text: "VCI Identifier", correct: false }
+        ],
+        rationale: "ฟิลด์ FCS ท้ายเฟรม Ethernet บรรจุค่า CRC-32 สำหรับตรวจจับข้อผิดพลาดระหว่างส่ง"
+      },
+      {
+        id: 20,
+        prompt: "โพรโทคอล BGP (Border Gateway Protocol) ถูกจัดอยู่ในหมวดหมู่ใดและมีหน้าที่อย่างไร?",
+        options: [
+          { text: "IGP สำหรับหาเส้นทางภายใน Area เดียวกัน", correct: false },
+          { text: "EGP / Inter-domain Routing สำหรับแลกเปลี่ยนเส้นทางระหว่าง Autonomous Systems (AS)", correct: true },
+          { text: "โพรโทคอลระดับ Layer 2 สำหรับป้องกัน Loop", correct: false },
+          { text: "โปรโตคอลแจกจ่าย IP บน Local LAN", correct: false }
+        ],
+        rationale: "BGP เป็น Inter-domain Routing Protocol ทำหน้าที่หาเส้นทางระหว่างระบบอิสระ (Autonomous Systems) ข้ามระดับอินเทอร์เน็ต"
+      }
+    ];
+
+    function renderMockExam() {
+      const container = document.getElementById('quiz-container');
+      container.innerHTML = '';
+
+      QUESTIONS.forEach((q, idx) => {
+        const qCard = document.createElement('div');
+        qCard.className = 'q-card';
+        qCard.id = 'q-card-' + q.id;
+
+        qCard.innerHTML = `
+          <div class="q-header">
+            <span class="badge badge-primary">ข้อที่ ${idx + 1}</span>
+          </div>
+          <div class="q-prompt">${q.prompt}</div>
+          <div class="options-grid">
+            ${q.options.map((opt, optIdx) => `
+              <label class="opt-label" id="opt-label-${q.id}-${optIdx}">
+                <input type="radio" name="q_${q.id}" value="${optIdx}" onchange="selectOption(${q.id}, ${optIdx})">
+                <span>${opt.text}</span>
+              </label>
+            `).join('')}
+          </div>
+          <div class="rationale-box" id="rationale-${q.id}">
+            <strong style="color: var(--primary);">เฉลยและเหตุผลทางเทคนิค:</strong><br>
+            ${q.rationale}
+          </div>
+        `;
+        container.appendChild(qCard);
+      });
+    }
+
+    function selectOption(qId, optIdx) {
+      const labels = document.querySelectorAll(`[id^="opt-label-${qId}-"]`);
+      labels.forEach(l => l.classList.remove('selected'));
+      const activeLabel = document.getElementById(`opt-label-${qId}-${optIdx}`);
+      if (activeLabel) activeLabel.classList.add('selected');
+    }
+
+    function submitExam() {
+      let score = 0;
+
+      QUESTIONS.forEach(q => {
+        const selected = document.querySelector(`input[name="q_${q.id}"]:checked`);
+        const rationale = document.getElementById(`rationale-${q.id}`);
+        rationale.style.display = 'block';
+
+        q.options.forEach((opt, optIdx) => {
+          const label = document.getElementById(`opt-label-${q.id}-${optIdx}`);
+          if (opt.correct) {
+            label.classList.add('correct');
+          }
+        });
+
+        if (selected) {
+          const chosenIdx = parseInt(selected.value);
+          const isCorrect = q.options[chosenIdx].correct;
+          if (isCorrect) {
+            score++;
+          } else {
+            const chosenLabel = document.getElementById(`opt-label-${q.id}-${chosenIdx}`);
+            chosenLabel.classList.add('incorrect');
+          }
+        }
+      });
+
+      const badge = document.getElementById('score-badge');
+      badge.textContent = `คะแนนของคุณ: ${score} / ${QUESTIONS.length} (${Math.round((score/QUESTIONS.length)*100)}%)`;
+      if (score >= 16) {
+        badge.className = 'badge badge-success';
+      } else if (score >= 10) {
+        badge.className = 'badge badge-accent';
+      } else {
+        badge.className = 'badge badge-danger';
+      }
+
+      window.scrollTo({ top: document.getElementById('score-badge').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    function resetExam() {
+      renderMockExam();
+      const badge = document.getElementById('score-badge');
+      badge.textContent = `คะแนนของคุณ: 0 / ${QUESTIONS.length}`;
+      badge.className = 'badge badge-accent';
+    }
+
+    // Initialize
+    window.onload = function() {
+      renderMockExam();
+    };
+  </script>
+</body>
+</html>
