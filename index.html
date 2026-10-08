@@ -1194,7 +1194,7 @@
         </p>
 
         <!-- Model Selector Tabs -->
-        <div class="model-tabs solver-tabs">
+        <div class="model-tabs">
           <button class="tab-btn active" onclick="switchModelSubTab('m1-vc')">โมเดล 1: VC Switching (Figure 3.44)</button>
           <button class="tab-btn" onclick="switchModelSubTab('m2-stp')">โมเดล 2: STP Extended LAN (Figure 3.48 Ex 13)</button>
           <button class="tab-btn" onclick="switchModelSubTab('m3-stpfail')">โมเดล 3: STP B1 Failover (Figure 3.48 Ex 14)</button>
@@ -2900,6 +2900,212 @@
     }
 
     // Initialize
+    
+    // ==========================================
+    // VISUAL EXAM MODELS TAB ENGINE (7 MODELS)
+    // ==========================================
+    function switchModelSubTab(modelId) {
+      // Hide all model contents
+      document.querySelectorAll('.model-content').forEach(function(el) {
+        el.style.display = 'none';
+        el.classList.remove('active');
+      });
+
+      // Remove active state from all model subtab buttons
+      document.querySelectorAll('.model-tabs .tab-btn').forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+
+      // Show selected model content
+      var target = document.getElementById('model-' + modelId);
+      if (target) {
+        target.style.display = 'block';
+        target.classList.add('active');
+      }
+
+      // Set active on matching button
+      var btns = document.querySelectorAll('.model-tabs .tab-btn');
+      btns.forEach(function(btn) {
+        var oc = btn.getAttribute('onclick') || '';
+        if (oc.indexOf(modelId) !== -1) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    function switchVCSet(setId) {
+      var set1 = document.getElementById('vc-prompt-set1');
+      var set2 = document.getElementById('vc-prompt-set2');
+      var btn1 = document.getElementById('btn-vc-set1');
+      var btn2 = document.getElementById('btn-vc-set2');
+
+      if (set1) set1.style.display = (setId === 'set1') ? 'block' : 'none';
+      if (set2) set2.style.display = (setId === 'set2') ? 'block' : 'none';
+      if (btn1) btn1.classList.toggle('active', setId === 'set1');
+      if (btn2) btn2.classList.toggle('active', setId === 'set2');
+    }
+
+    function switchLearnTab(tabId) {
+      var c15 = document.getElementById('learn-content-ex15');
+      var c16 = document.getElementById('learn-content-ex16');
+      var b15 = document.getElementById('btn-learn-ex15');
+      var b16 = document.getElementById('btn-learn-ex16');
+
+      if (c15) c15.style.display = (tabId === 'ex15') ? 'block' : 'none';
+      if (c16) c16.style.display = (tabId === 'ex16') ? 'block' : 'none';
+      if (b15) b15.classList.toggle('active', tabId === 'ex15');
+      if (b16) b16.classList.toggle('active', tabId === 'ex16');
+    }
+
+    function toggleReveal(elemId) {
+      var el = document.getElementById(elemId);
+      if (el) {
+        if (el.style.display === 'block') {
+          el.style.display = 'none';
+          el.classList.remove('open');
+        } else {
+          el.style.display = 'block';
+          el.classList.add('open');
+        }
+      }
+    }
+
+    // Lightbox modal viewer for high-res exam figures
+    function openLightbox(imgSrc, title) {
+      var modal = document.getElementById('lightbox-modal');
+      var img = document.getElementById('lightbox-img');
+      var titleEl = document.getElementById('lightbox-title');
+      if (modal && img) {
+        img.src = imgSrc;
+        if (titleEl) titleEl.textContent = title || 'ภาพขยายข้อสอบจริง';
+        modal.style.display = 'flex';
+      }
+    }
+
+    function closeLightbox(e) {
+      if (e && e.target && e.target.id !== 'lightbox-modal' && !e.target.classList.contains('lightbox-close')) {
+        return;
+      }
+      var modal = document.getElementById('lightbox-modal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(evt) {
+      if (evt.key === 'Escape' || evt.keyCode === 27) {
+        var modal = document.getElementById('lightbox-modal');
+        if (modal) modal.style.display = 'none';
+      }
+    });
+
+    // VC Interactive Table Validation
+    var VC_ANSWERS = {
+      sw1_a_ip: '2', sw1_a_vi: ['0', '9'], sw1_a_op: '3', sw1_a_vo: ['0', '69'],
+      sw1_b_ip: '0', sw1_b_vi: ['0', '78'], sw1_b_op: '1', sw1_b_vo: ['0', '122'],
+      sw1_c_ip: '0', sw1_c_vi: ['1', '79'], sw1_c_op: '1', sw1_c_vo: ['1', '123'],
+      sw1_d_ip: '2', sw1_d_vi: ['1', '10'], sw1_d_op: '1', sw1_d_vo: ['2', '124'],
+      sw1_f_ip: '1', sw1_f_vi: ['3', '125'], sw1_f_op: '2', sw1_f_vo: ['2', '11'],
+      sw2_b_ip: '3', sw2_b_vi: ['0', '225'], sw2_b_op: '0', sw2_b_vo: ['0', '874'],
+      sw2_c_ip: '3', sw2_c_vi: ['1', '226'], sw2_c_op: '0', sw2_c_vo: ['1', '875'],
+      sw2_d_ip: '3', sw2_d_vi: ['2', '227'], sw2_d_op: '0', sw2_d_vo: ['2', '876'],
+      sw2_e_ip: '1', sw2_e_vi: ['0', '574'], sw2_e_op: '0', sw2_e_vo: ['3', '877'],
+      sw2_f_ip: '1', sw2_f_vi: ['1', '575'], sw2_f_op: '3', sw2_f_vo: ['3', '228']
+    };
+
+    function checkVCTable() {
+      var correct = 0;
+      var total = Object.keys(VC_ANSWERS).length;
+
+      for (var k in VC_ANSWERS) {
+        var input = document.getElementById(k);
+        if (!input) continue;
+        var val = input.value.trim();
+        var expected = VC_ANSWERS[k];
+        var isRight = false;
+        if (Array.isArray(expected)) {
+          isRight = expected.includes(val);
+        } else {
+          isRight = (val === expected);
+        }
+
+        if (isRight) {
+          input.className = 'cell-input is-correct';
+          correct++;
+        } else {
+          input.className = 'cell-input is-wrong';
+        }
+      }
+
+      var fb = document.getElementById('vc-feedback');
+      if (fb) {
+        fb.textContent = 'ถูกต้อง ' + correct + ' / ' + total + ' ช่อง (' + Math.round((correct / total) * 100) + '%)';
+        fb.style.color = (correct >= total * 0.8) ? '#15803d' : '#b91c1c';
+      }
+    }
+
+    function fillVCSample() {
+      var sampleVals = {
+        sw1_a_ip: '2', sw1_a_vi: '0', sw1_a_op: '3', sw1_a_vo: '0',
+        sw1_b_ip: '0', sw1_b_vi: '0', sw1_b_op: '1', sw1_b_vo: '0',
+        sw1_c_ip: '0', sw1_c_vi: '1', sw1_c_op: '1', sw1_c_vo: '1',
+        sw1_d_ip: '2', sw1_d_vi: '1', sw1_d_op: '1', sw1_d_vo: '2',
+        sw1_f_ip: '1', sw1_f_vi: '3', sw1_f_op: '2', sw1_f_vo: '2',
+        sw2_b_ip: '3', sw2_b_vi: '0', sw2_b_op: '0', sw2_b_vo: '0',
+        sw2_c_ip: '3', sw2_c_vi: '1', sw2_c_op: '0', sw2_c_vo: '1',
+        sw2_d_ip: '3', sw2_d_vi: '2', sw2_d_op: '0', sw2_d_vo: '2',
+        sw2_e_ip: '1', sw2_e_vi: '0', sw2_e_op: '0', sw2_e_vo: '3',
+        sw2_f_ip: '1', sw2_f_vi: '1', sw2_f_op: '3', sw2_f_vo: '3'
+      };
+      for (var k in sampleVals) {
+        var el = document.getElementById(k);
+        if (el) {
+          el.value = sampleVals[k];
+          el.className = 'cell-input';
+        }
+      }
+    }
+
+    function clearVCTable() {
+      for (var k in VC_ANSWERS) {
+        var el = document.getElementById(k);
+        if (el) {
+          el.value = '';
+          el.className = 'cell-input';
+        }
+      }
+      var fb = document.getElementById('vc-feedback');
+      if (fb) fb.textContent = '';
+    }
+
+    // STP Ex 13 Validation
+    function checkSTP13() {
+      var rootChecked = document.querySelector('input[name="stp13_root"]:checked');
+      var b2Checked = document.querySelector('input[name="stp13_b2_rp"]:checked');
+      var chk1 = document.getElementById('stp13_chk1') ? document.getElementById('stp13_chk1').checked : false;
+      var chk2 = document.getElementById('stp13_chk2') ? document.getElementById('stp13_chk2').checked : false;
+      var chk3 = document.getElementById('stp13_chk3') ? document.getElementById('stp13_chk3').checked : false;
+      var chk4 = document.getElementById('stp13_chk4') ? document.getElementById('stp13_chk4').checked : false;
+      var chk5 = document.getElementById('stp13_chk5') ? document.getElementById('stp13_chk5').checked : false;
+
+      var score = 0;
+      if (rootChecked && rootChecked.value === 'B1') score++;
+      if (b2Checked && b2Checked.value === 'D') score++;
+      if (chk1 && chk2 && chk3 && !chk4 && !chk5) score++;
+
+      var fb = document.getElementById('stp13-feedback');
+      if (fb) {
+        if (score === 3) {
+          fb.textContent = '🎉 ถูกต้องครบถ้วนทั้ง 3 ประเด็น (100%) ยอดเยี่ยมมาก!';
+          fb.style.color = '#15803d';
+        } else {
+          fb.textContent = 'คะแนน ' + score + ' / 3 ข้อ (ลองกดดูเฉลยวิธีคิดด้านข้างเพื่อทบทวน)';
+          fb.style.color = '#b91c1c';
+        }
+      }
+    }
+
     window.onload = function() {
       renderMockExam();
     };
